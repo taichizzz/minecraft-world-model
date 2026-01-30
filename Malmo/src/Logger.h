@@ -59,6 +59,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <chrono>
 
 namespace malmo
 {

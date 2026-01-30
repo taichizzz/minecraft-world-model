@@ -110,7 +110,6 @@ endif()
 # -------------------- Find packages --------------------------
 
 if ( WIN32 )
-    enable_language( CSharp )
 else()
     set( INCLUDE_CSHARP OFF )
 endif()

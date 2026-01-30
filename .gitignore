@@ -215,3 +215,68 @@ Schemas/xs3p.xsl
 Minecraft/run/config/malmomodCLIENT.cfg
 Minecraft/Minecraft_Client.launch
 
+# Datasets / recordings (DO NOT COMMIT)
+dataset/*
+!dataset/collect_data.py
+dataset/**
+!dataset/collect_data.py
+datasets/
+data/
+recordings/
+*.npz
+*.npy
+*.npz.tmp
+*.tgz
+*.mp4
+
+# BUT keep the data collection code
+!dataset/collect_data.py
+
+# Training outputs / checkpoints
+runs/
+logs/
+wandb/
+checkpoints/
+outputs/
+results/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Python environments
+.venv/
+venv/
+env/
+__pycache__/
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.swp
+
+# Minecraft runtime stuff (DO NOT COMMIT)
+Minecraft/.minecraft/
+Minecraft/.minecraftserver/
+Minecraft/run/
+Minecraft/run/**
+
+# If you want to keep run/ but ignore only generated parts, use this instead:
+# Minecraft/run/saves/
+# Minecraft/run/config/
+# Minecraft/run/usercache.json
+# Minecraft/run/usernamecache.json
+# Minecraft/run/recipe_dump.txt
+
+# Malmo test edits (usually don't commit unless intentional)
+Malmo/test/PythonTests/malmoutils.py
+
+

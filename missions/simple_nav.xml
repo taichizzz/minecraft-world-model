@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Mission xmlns="http://ProjectMalmo.microsoft.com">
+  <About>
+    <Summary>Dataset Collection</Summary>
+  </About>
+
+  <ServerSection>
+    <ServerHandlers>
+      <FlatWorldGenerator generatorString="3;7,220*1,5*3,2;3;,biome_1"/>
+      <DrawingDecorator>
+        <DrawCuboid x1="-5" y1="226" z1="-5" x2="5" y2="226" z2="5" type="stone"/>
+        <DrawBlock x="4" y="227" z="4" type="diamond_block"/>
+      </DrawingDecorator>
+      <ServerQuitFromTimeUp timeLimitMs="30000"/>
+    </ServerHandlers>
+  </ServerSection>
+
+  <AgentSection mode="Survival">
+    <Name>Collector</Name>
+    <AgentStart>
+      <Placement x="0.5" y="227" z="0.5"/>
+    </AgentStart>
+    <AgentHandlers>
+      <ObservationFromFullStats/>
+      <VideoProducer>
+        <Width>64</Width>
+        <Height>64</Height>
+      </VideoProducer>
+      <DiscreteMovementCommands/>
+    </AgentHandlers>
+  </AgentSection>
+</Mission>
