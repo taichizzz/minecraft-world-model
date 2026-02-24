@@ -27,8 +27,10 @@ os.makedirs(SAVE_DIR, exist_ok=True)
 agent_host = MalmoPython.AgentHost()
 
 # Explicit Minecraft client
-client_pool = MalmoPython.ClientPool()
-client_pool.add(MalmoPython.ClientInfo("127.0.0.1", 10000))
+# client_pool = MalmoPython.ClientPool()
+# client_pool.add(MalmoPython.ClientInfo("127.0.0.1", 10000))
+# for p in range(10000, 10010):
+#     client_pool.add(MalmoPython.ClientInfo("127.0.0.1", p))
 
 for episode in range(EPISODES):
     print(f"\n=== Episode {episode} ===")
@@ -43,20 +45,28 @@ for episode in range(EPISODES):
     # Ensure no mission is still running
     ws = agent_host.getWorldState()
     while ws.is_mission_running:
-        time.sleep(0.1)
-        ws = agent_host.getWorldState()
+        # time.sleep(0.1)
+        # ws = agent_host.getWorldState()
+        t0 = time.time()
+        while time.time() - t0 < 2.0:
+            ws = agent_host.getWorldState()
+            if not ws.is_mission_running:
+                time.sleep(0.1)
+            else:
+                time.sleep(0.1)
 
     # Start mission safely
     max_retries = 5
     for retry in range(max_retries):
         try:
-            agent_host.startMission(
-                mission,
-                client_pool,
-                record,
-                0,
-                f"dataset_ep_{episode}"
-            )
+            # agent_host.startMission(
+            #     mission,
+            #     client_pool,
+            #     record,
+            #     0,
+            #     f"dataset_ep_{episode}"
+            # )
+            agent_host.startMission(mission, record)
             break
         except MalmoPython.MissionException as e:
             if retry == max_retries - 1:

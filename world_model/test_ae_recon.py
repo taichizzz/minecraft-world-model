@@ -43,7 +43,6 @@ def make_grid_row(images_uint8, pad=4):
     return canvas
 
 def main():
-    # ---- Find episodes ----
     episode_files = sorted(glob.glob(os.path.join(DATASET_DIR, "episode_*.npz")))
     if not episode_files:
         raise FileNotFoundError(f"No episode_*.npz found in {DATASET_DIR}")
@@ -52,7 +51,7 @@ def main():
     print("Using episode:", ep_path)
 
     data = np.load(ep_path)
-    obs = data["obs"]   # expected (T,64,64,3) uint8
+    obs = data["obs"]
     print("obs shape:", obs.shape, "dtype:", obs.dtype)
 
     if obs.ndim != 4 or obs.shape[-1] != 3:
@@ -62,19 +61,15 @@ def main():
     if H != 64 or W != 64:
         print(f"Warning: expected 64x64, got {H}x{W}")
 
-    # choose frames
     idxs = random.sample(range(T), k=min(N_SAMPLES, T))
     idxs.sort()
     frames = obs[idxs]  # (N,H,W,3)
     print("sample idxs:", idxs)
 
-    # ---- Build batch tensor ----
-    # uint8 -> float32 [0,1], HWC -> CHW
     batch = torch.from_numpy(frames).float() / 255.0
     batch = batch.permute(0, 3, 1, 2)  # (N,3,H,W)
     batch = batch.to(DEVICE)
 
-    # ---- Load model ----
     model = AutoEncoder(latent_dim=128).to(DEVICE)
     state = torch.load(AE_WEIGHTS, map_location=DEVICE)
     model.load_state_dict(state)
@@ -87,7 +82,6 @@ def main():
     print("batch:", tuple(batch.shape), "recon:", tuple(recon.shape), "z:", tuple(z.shape))
     print(f"MSE on these samples: {loss:.6f}")
 
-    # ---- Convert to images ----
     originals = [to_uint8_img(batch[i]) for i in range(batch.shape[0])]
     recons    = [to_uint8_img(recon[i]) for i in range(recon.shape[0])]
 
