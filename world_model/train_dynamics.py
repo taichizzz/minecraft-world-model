@@ -2,6 +2,7 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, random_split
 import torch.optim as optim
+import matplotlib.pyplot as plt
 
 from model import AutoEncoder
 from transition_dataset import TransitionDataset
@@ -38,6 +39,9 @@ def main():
     dyn = DynamicsMLP(latent_dim=LATENT_DIM, num_actions=4, hidden=256).to(DEVICE)
     opt = optim.Adam(dyn.parameters(), lr=LR)
 
+    train_losses = []
+    val_losses = []
+
     for epoch in range(EPOCHS):
         dyn.train()
         total = 0.0
@@ -49,9 +53,15 @@ def main():
 
             with torch.no_grad():
                 z_t = ae.encoder(img_t)       # (B,128)
-                z_tp1 = ae.encoder(img_tp1)   # (B,128)
+                z_tp1 = ae.encoder(img_tp1)   
 
-            z_pred = dyn(z_t, a_t)
+            # original
+            # z_pred = dyn(z_t, a_t)   
+            # loss = F.mse_loss(z_pred, z_tp1)
+
+            # try predicting the small change
+            delta = dyn(z_t, a_t)
+            z_pred = z_t + delta   
             loss = F.mse_loss(z_pred, z_tp1)
 
             opt.zero_grad()
@@ -70,13 +80,42 @@ def main():
                 a_t = a_t.to(DEVICE)
                 z_t = ae.encoder(img_t)
                 z_tp1 = ae.encoder(img_tp1)
-                z_pred = dyn(z_t, a_t)
-                vtotal += F.mse_loss(z_pred, z_tp1).item()
 
-        print(f"Epoch {epoch:02d} train={total/len(train_loader):.6f} val={vtotal/len(val_loader):.6f}")
+                # original
+                # z_pred = dyn(z_t, a_t)
+
+                # try predicting the small change
+                delta = dyn(z_t, a_t)
+                z_pred = z_t + delta
+
+                vtotal += F.mse_loss(z_pred, z_tp1).item()
+                
+
+        # print(f"Epoch {epoch:02d} train={total/len(train_loader):.6f} val={vtotal/len(val_loader):.6f}")
+
+        train_loss = total / len(train_loader)
+        val_loss = vtotal / len(val_loader)
+
+        train_losses.append(train_loss)
+        val_losses.append(val_loss)
+
+        print(f"Epoch {epoch:02d} | Train: {train_loss:.6f} | Val: {val_loss:.6f}")
+
+    plt.figure(figsize=(6,4))
+    plt.plot(train_losses, label="Train")
+    plt.plot(val_losses, label="Validation")
+    plt.xlabel("Epoch")
+    plt.ylabel("MSE Loss")
+    plt.title("Dynamics Training Loss")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("world_model_out/dynamics_loss_curve.png")
+    plt.close()
+
+    print("Saved loss curve to world_model_out/dynamics_loss_curve.png")
 
     torch.save(dyn.state_dict(), "dynamics.pth")
-    print("Saved dynamics.pth")
+    print("saved dynamics.pth")
 
 if __name__ == "__main__":
     main()

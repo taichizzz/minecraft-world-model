@@ -11,12 +11,20 @@ from dynamics_model import DynamicsMLP
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
+SEED = 42
+
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+
 DATASET_DIR = "dataset"
 AE_WEIGHTS = "ae.pth"
-DYN_WEIGHTS = "dynamics.pth"
+# DYN_WEIGHTS = "dynamics.pth"
+DYN_WEIGHTS = "dynamics_multistep4.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 4
+USE_RESIDUAL = True
 
 # rollout length
 K = 16
@@ -42,7 +50,6 @@ def make_grid_row(imgs_bchw):
     return imgs
 
 def main():
-    # pick a random episode file
     files = sorted([f for f in os.listdir(DATASET_DIR) if f.startswith("episode_") and f.endswith(".npz")])
     if not files:
         raise RuntimeError(f"No episodes found in {DATASET_DIR}")
@@ -79,25 +86,37 @@ def main():
     # rollout in latent space
     z_pred_list = [z_gt[0]]  # start from true z0
     with torch.no_grad():
-        z = z_gt[0].unsqueeze(0)  # (1,128)
+        z = z_gt[0].unsqueeze(0)  # (1, latent)
         for i in range(K):
-            a = torch.tensor([int(act_seq[i])], dtype=torch.long, device=DEVICE)  # (1,)
-            z = dyn(z, a)  # (1,128)
-            z_pred_list.append(z.squeeze(0))
-    z_pred = torch.stack(z_pred_list, dim=0)  # (K+1,128)
+            a = torch.tensor([int(act_seq[i])], dtype=torch.long, device=DEVICE)
 
-    # decode both sequences to images
+            if USE_RESIDUAL:
+                delta = dyn(z, a)
+                delta = torch.tanh(delta) * 0.2
+                z = z + delta
+            else:
+                z = dyn(z, a)
+
+            z_pred_list.append(z.squeeze(0))
+    z_pred = torch.stack(z_pred_list, dim=0)
+
+    # decode
     with torch.no_grad():
-        recon_gt   = ae.decoder(z_gt)    # (K+1,3,64,64)
-        recon_pred = ae.decoder(z_pred)  # (K+1,3,64,64)
+        recon_gt   = ae.decoder(z_gt)  
+        recon_pred = ae.decoder(z_pred)  
 
     # compute rollout error in latent + pixel
     with torch.no_grad():
         latent_mse = F.mse_loss(z_pred, z_gt).item()
         pixel_mse  = F.mse_loss(recon_pred, recon_gt).item()
+        gt_imgs_chw = to_torch_img(gt_frames).to(DEVICE)
+        pixel_mse_true = F.mse_loss(recon_pred, gt_imgs_chw).item()
+    
+
 
     print(f"Latent MSE over rollout: {latent_mse:.6f}")
     print(f"Pixel MSE over rollout (decoded): {pixel_mse:.6f}")
+    print(f"Pixel MSE vs TRUE frames: {pixel_mse_true:.6f}")
 
     # plot grid: top = GT recon, bottom = Pred recon
     top = make_grid_row(recon_gt)      # (K+1,64,64,3)
@@ -116,10 +135,12 @@ def main():
     axes[1, 0].set_ylabel("Pred", fontsize=10)
     plt.tight_layout()
 
-    out_path = os.path.join(OUT_DIR, "dyn_rollout.png")
+    # out_path = os.path.join(OUT_DIR, "dyn_rollout3.png")
+    out_path = os.path.join(OUT_DIR, "dyn_multistep_rollout4.png")
     plt.savefig(out_path, dpi=200)
     plt.close(fig)
     print("Saved:", out_path)
+    
 
 if __name__ == "__main__":
     main()
