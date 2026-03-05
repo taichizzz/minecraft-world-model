@@ -13,11 +13,16 @@ MAX_STEPS = 200
 IMG_W = 64
 IMG_H = 64
 
+# 8-way movement (Option A): diagonals are two commands in one step
 ACTIONS = [
-    "movenorth 1",
-    "movesouth 1",
-    "moveeast 1",
-    "movewest 1"
+    ["movenorth 1"],                  # 0: N
+    ["movesouth 1"],                  # 1: S
+    ["moveeast 1"],                   # 2: E
+    ["movewest 1"],                   # 3: W
+    ["movenorth 1", "moveeast 1"],    # 4: NE
+    ["movenorth 1", "movewest 1"],    # 5: NW
+    ["movesouth 1", "moveeast 1"],    # 6: SE
+    ["movesouth 1", "movewest 1"],    # 7: SW
 ]
 
 # ==========================================
@@ -25,12 +30,6 @@ ACTIONS = [
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 agent_host = MalmoPython.AgentHost()
-
-# Explicit Minecraft client
-# client_pool = MalmoPython.ClientPool()
-# client_pool.add(MalmoPython.ClientInfo("127.0.0.1", 10000))
-# for p in range(10000, 10010):
-#     client_pool.add(MalmoPython.ClientInfo("127.0.0.1", p))
 
 for episode in range(EPISODES):
     print(f"\n=== Episode {episode} ===")
@@ -45,8 +44,6 @@ for episode in range(EPISODES):
     # Ensure no mission is still running
     ws = agent_host.getWorldState()
     while ws.is_mission_running:
-        # time.sleep(0.1)
-        # ws = agent_host.getWorldState()
         t0 = time.time()
         while time.time() - t0 < 2.0:
             ws = agent_host.getWorldState()
@@ -59,13 +56,6 @@ for episode in range(EPISODES):
     max_retries = 5
     for retry in range(max_retries):
         try:
-            # agent_host.startMission(
-            #     mission,
-            #     client_pool,
-            #     record,
-            #     0,
-            #     f"dataset_ep_{episode}"
-            # )
             agent_host.startMission(mission, record)
             break
         except MalmoPython.MissionException as e:
@@ -127,11 +117,15 @@ for episode in range(EPISODES):
         frame = np.frombuffer(frame, dtype=np.uint8)
         frame = frame.reshape(IMG_H, IMG_W, 3)
 
-        action = random.choice(ACTIONS)
-        agent_host.sendCommand(action)
+        # ----- choose one of 8 actions -----
+        action_idx = random.randrange(len(ACTIONS))
+        for cmd in ACTIONS[action_idx]:
+            agent_host.sendCommand(cmd)
+            # Optional tiny delay if you feel diagonals sometimes "miss" one command:
+            # time.sleep(0.01)
 
         obs_list.append(frame)
-        action_list.append(ACTIONS.index(action))
+        action_list.append(action_idx)
         pos_list.append([x, z])
         done_list.append(0)
 
