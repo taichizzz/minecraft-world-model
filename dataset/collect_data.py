@@ -1,3 +1,5 @@
+import sys
+sys.path.append(r"C:\Users\user\OneDrive\Desktop\Stuff\Zhuanti\malmo\build\Malmo\src\PythonWrapper\Release")
 import MalmoPython
 import time
 import json
@@ -5,9 +7,14 @@ import random
 import numpy as np
 import os
 
+os.environ.setdefault(
+    "MALMO_XSD_PATH",
+    r"C:\Users\user\OneDrive\Desktop\Stuff\Zhuanti\malmo\Schemas"
+)
+
 # ================= CONFIG =================
-MISSION_FILE = "missions/simple_nav.xml"
-SAVE_DIR = "dataset"
+MISSION_FILE = "missions/env3.xml"
+SAVE_DIR = "dataset/dataset2"  # where to save episode_000000.npz ...
 EPISODES = 200
 MAX_STEPS = 200
 IMG_W = 64
@@ -101,7 +108,6 @@ for episode in range(EPISODES):
     pos_list = []
     done_list = []
 
-    # ================= MAIN LOOP =================
     for step in range(MAX_STEPS):
         ws = agent_host.getWorldState()
 

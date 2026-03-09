@@ -23,7 +23,6 @@ class Encoder(nn.Module):
         z = self.fc(x)
         return z
 
-
 class Decoder(nn.Module):
     def __init__(self, latent_dim=128):
         super().__init__()
