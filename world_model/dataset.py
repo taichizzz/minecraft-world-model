@@ -53,3 +53,23 @@ class MinecraftTransitions(Dataset):
         action_t = torch.tensor(action_t, dtype=torch.long)
 
         return frame_t, action_t, frame_tp1
+    
+class MinecraftImages(Dataset):
+    def __init__(self, dataset_dir):
+        self.frames = []
+
+        files = sorted(glob.glob(f"{dataset_dir}/episode_*.npz"))
+        for file in files:
+            data = np.load(file)
+            obs = data["obs"]
+            for frame in obs:
+                self.frames.append(frame)
+
+    def __len__(self):
+        return len(self.frames)
+
+    def __getitem__(self, idx):
+        frame = self.frames[idx]
+        frame = torch.from_numpy(frame).float() / 255.0
+        frame = frame.permute(2,0,1).contiguous()
+        return frame
