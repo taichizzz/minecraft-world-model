@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Mission xmlns="http://ProjectMalmo.microsoft.com"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <About>
+    <Summary>Env5 Plus Corridor (seed 20154313) - diamond + cyan pillars</Summary>
+  </About>
+
+  <ServerSection>
+    <ServerHandlers>
+      <FlatWorldGenerator generatorString="3;7,220*1,5*3,2;3;,biome_1"/>
+
+      <DrawingDecorator>
+        <!-- FLOOR: plus sign (union of 2 rectangles) -->
+        <!-- Horizontal strip: x=-12..12, z=-2..2 -->
+        <DrawCuboid x1="-12" y1="226" z1="-2" x2="12" y2="226" z2="2" type="gold_block"/>
+        <!-- Vertical strip: x=-2..2, z=-12..12 -->
+        <DrawCuboid x1="-2" y1="226" z1="-12" x2="2" y2="226" z2="12" type="gold_block"/>
+
+        <!-- WALLS (brick_block), height y=227..229 -->
+
+        <!-- Horizontal corridor walls (z=-2 and z=2), trimmed x=-11..11 -->
+        <DrawCuboid x1="-11" y1="227" z1="-2" x2="11" y2="229" z2="-2" type="brick_block"/>
+        <DrawCuboid x1="-11" y1="227" z1="2"  x2="11" y2="229" z2="2"  type="brick_block"/>
+
+        <!-- Horizontal end caps (x=-12 and x=12), z=-2..2 -->
+        <DrawCuboid x1="-12" y1="227" z1="-2" x2="-12" y2="229" z2="2" type="brick_block"/>
+        <DrawCuboid x1="12"  y1="227" z1="-2" x2="12"  y2="229" z2="2" type="brick_block"/>
+
+        <!-- Vertical corridor walls (x=-2 and x=2), trimmed z=-11..11 -->
+        <DrawCuboid x1="-2" y1="227" z1="-11" x2="-2" y2="229" z2="11" type="brick_block"/>
+        <DrawCuboid x1="2"  y1="227" z1="-11" x2="2"  y2="229" z2="11" type="brick_block"/>
+
+        <!-- Vertical end caps (z=-12 and z=12), x=-2..2 -->
+        <DrawCuboid x1="-2" y1="227" z1="-12" x2="2" y2="229" z2="-12" type="brick_block"/>
+        <DrawCuboid x1="-2" y1="227" z1="12"  x2="2" y2="229" z2="12"  type="brick_block"/>
+
+        <!-- ✅ CARVE CENTER JUNCTION open (equivalent to: air replace bricks) -->
+        <DrawCuboid x1="-2" y1="227" z1="-2" x2="2" y2="229" z2="2" type="air"/>
+
+        <!-- Diamond goal (goalZ = cz + 12 - 1 = 11) -->
+        <DrawBlock x="0" y="227" z="11" type="diamond_block"/>
+
+        <!-- Seeded cyan wool pillars (1x1 footprint, height y=227..229) -->
+        <DrawCuboid x1="0"  y1="227" z1="-10" x2="0"  y2="229" z2="-10" type="cyan_wool"/>
+        <DrawCuboid x1="1"  y1="227" z1="5"   x2="1"  y2="229" z2="5"   type="cyan_wool"/>
+        <DrawCuboid x1="-1" y1="227" z1="11"  x2="-1" y2="229" z2="11"  type="cyan_wool"/>
+        <DrawCuboid x1="-1" y1="227" z1="-8"  x2="-1" y2="229" z2="-8"  type="cyan_wool"/>
+        <DrawCuboid x1="-6" y1="227" z1="0"   x2="-6" y2="229" z2="0"   type="cyan_wool"/>
+        <DrawCuboid x1="7"  y1="227" z1="-1"  x2="7"  y2="229" z2="-1"  type="cyan_wool"/>
+        <DrawCuboid x1="0"  y1="227" z1="6"   x2="0"  y2="229" z2="6"   type="cyan_wool"/>
+        <DrawCuboid x1="10" y1="227" z1="0"   x2="10" y2="229" z2="0"   type="cyan_wool"/>
+        <DrawCuboid x1="1"  y1="227" z1="-6"  x2="1"  y2="229" z2="-6"  type="cyan_wool"/>
+        <DrawCuboid x1="6"  y1="227" z1="1"   x2="6"  y2="229" z2="1"   type="cyan_wool"/>
+      </DrawingDecorator>
+
+      <ServerQuitFromTimeUp timeLimitMs="30000"/>
+      <ServerQuitWhenAnyAgentFinishes/>
+    </ServerHandlers>
+  </ServerSection>
+
+  <AgentSection mode="Survival">
+    <Name>Collector</Name>
+
+    <AgentStart>
+      <Placement x="-11.5" y="227" z="0.5" yaw="90" pitch="20"/>
+    </AgentStart>
+
+    <AgentHandlers>
+      <ObservationFromFullStats/>
+      <ObservationFromRay/>
+
+      <VideoProducer>
+        <Width>64</Width>
+        <Height>64</Height>
+      </VideoProducer>
+
+      <DiscreteMovementCommands/>
+
+      <AgentQuitFromTouchingBlockType>
+        <Block type="diamond_block"/>
+      </AgentQuitFromTouchingBlockType>
+    </AgentHandlers>
+  </AgentSection>
+
+</Mission>
