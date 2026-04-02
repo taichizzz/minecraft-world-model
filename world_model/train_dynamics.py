@@ -13,7 +13,7 @@ from torch.utils.data import ConcatDataset
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 DATASET_DIR = "dataset"
-AE_WEIGHTS = "ae3.pth"   
+AE_WEIGHTS = "ae4.pth"   
 LATENT_DIM = 128
 BATCH = 128
 EPOCHS = 80
@@ -23,9 +23,11 @@ LOG_EVERY = 200
 
 ds1 = TransitionDataset("dataset/dataset1")
 ds2 = TransitionDataset("dataset/dataset2")
+ds3 = TransitionDataset("dataset/dataset3")
 
 print("Transitions ds1:", len(ds1))
 print("Transitions ds2:", len(ds2))
+print("Transitions ds3:", len(ds3))
 
 def split_dataset(ds, val_fraction=0.1):
     n = len(ds)
@@ -35,11 +37,10 @@ def split_dataset(ds, val_fraction=0.1):
 
 train1, val1 = split_dataset(ds1)
 train2, val2 = split_dataset(ds2)
+train3, val3 = split_dataset(ds3)
 
-train_ds = ConcatDataset([train1, train2])
-val_ds   = ConcatDataset([val1, val2])
-
-
+train_ds = ConcatDataset([train1, train2, train3])
+val_ds   = ConcatDataset([val1, val2, val3])
 
 def main():
     # dataset
@@ -57,9 +58,11 @@ def main():
 
     loader1 = DataLoader(train1, batch_size=BATCH//2, shuffle=True, drop_last=True)
     loader2 = DataLoader(train2, batch_size=BATCH//2, shuffle=True, drop_last=True)
+    loader3 = DataLoader(train3, batch_size=BATCH//2, shuffle=True, drop_last=True)
 
     val_loader1 = DataLoader(val1, batch_size=BATCH//2, shuffle=False, drop_last=True)
     val_loader2 = DataLoader(val2, batch_size=BATCH//2, shuffle=False, drop_last=True)
+    val_loader3 = DataLoader(val3, batch_size=BATCH//2, shuffle=False, drop_last=True)
 
     train_loader = DataLoader(train_ds, batch_size=BATCH, shuffle=True, drop_last=True)
     val_loader   = DataLoader(val_ds, batch_size=BATCH, shuffle=False, drop_last=True)
@@ -174,13 +177,13 @@ def main():
     plt.title("Dynamics Training Loss")
     plt.legend()
     plt.tight_layout()
-    plt.savefig("world_model_out/dynamics_loss_balanced2.png")
+    plt.savefig("world_model_out/dynamics_loss_balanced_ds3.png")
     plt.close()
 
-    print("Saved loss curve to world_model_out/dynamics_loss_balanced2.png")
+    print("Saved loss curve to world_model_out/dynamics_loss_balanced_ds3.png")
 
-    torch.save(dyn.state_dict(), "dynamics_balanced2.pth")
-    print("saved dynamics_balanced2.pth")
+    torch.save(dyn.state_dict(), "dynamics_balanced_ds3.pth")
+    print("saved dynamics_balanced_ds3.pth")
 
 if __name__ == "__main__":
     main()
