@@ -3,7 +3,7 @@ import random
 import numpy as np
 import torch
 
-DATASET_DIR = "dataset/dataset2"   
+DATASET_DIR = "dataset/dataset1"   
 
 def main():
     files = sorted([

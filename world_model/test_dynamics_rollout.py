@@ -159,9 +159,9 @@ from dynamics_model import DynamicsMLP
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-DATASET_DIR = "dataset/dataset2"
-AE_WEIGHTS = "ae3.pth"
-DYN_WEIGHTS = "dynamics_balanced2.pth"
+DATASET_DIR = "dataset/dataset3"
+AE_WEIGHTS = "ae4.pth"
+DYN_WEIGHTS = "dynamics_multistep_k5.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 4
@@ -272,7 +272,7 @@ def main():
     axes[1, 0].set_ylabel("Pred", fontsize=10)
     plt.tight_layout()
 
-    out_path = os.path.join(OUT_DIR, "dyn_rollout_balanced_test4.png")
+    out_path = os.path.join(OUT_DIR, "dyn_rollout_multistep_4_2_3.png")
     plt.savefig(out_path, dpi=200)
     plt.close(fig)
     print("Saved:", out_path)

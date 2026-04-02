@@ -12,21 +12,23 @@ BETA = 0.01
 
 dataset1 = TransitionDataset("dataset/dataset1")
 dataset2 = TransitionDataset("dataset/dataset2")
-combined_dataset = ConcatDataset([dataset1, dataset2])
+dataset3 = TransitionDataset("dataset/dataset3")
+combined_dataset = ConcatDataset([dataset1, dataset2, dataset3])
 
 print("dataset1 frames:", len(dataset1))
 print("dataset2 frames:", len(dataset2))
+print("dataset3 frames:", len(dataset3))
 print("combined frames:", len(combined_dataset))
 
 loader = DataLoader(combined_dataset, batch_size=64, shuffle=True, drop_last=True)
 
 model = AutoEncoder(latent_dim=128).to(DEVICE)
-model.load_state_dict(torch.load("ae2.pth", map_location=DEVICE))
+model.load_state_dict(torch.load("ae3.pth", map_location=DEVICE))
 
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
 print("Starting training...")
 print("Using device:", DEVICE)
-for epoch in range(20):
+for epoch in range(30):
     print("Epoch", epoch, "started")
     model.train()
     total_loss = 0.0
@@ -67,8 +69,8 @@ for epoch in range(20):
 
     print(f"Epoch {epoch}: loss={total_loss/len(loader):.6f}")
 
-torch.save(model.state_dict(), "ae3.pth")
-torch.save(model.encoder.state_dict(), "encoder3.pth") 
+torch.save(model.state_dict(), "ae4.pth")
+torch.save(model.encoder.state_dict(), "encoder4.pth") 
 
-print("Saved ae3.pth")
-print("Saved encoder3.pth")
+print("Saved ae4.pth")
+print("Saved encoder4.pth")
