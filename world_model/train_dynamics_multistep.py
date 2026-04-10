@@ -16,8 +16,8 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # =========================
 # CONFIG
 # =========================
-AE_WEIGHTS = "ae4.pth"
-OUT_WEIGHTS = "dynamics_multistep_k5.pth"
+AE_WEIGHTS = "ae6.pth"
+OUT_WEIGHTS = "dynamics_multistep_k7.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 4
@@ -82,17 +82,20 @@ def main():
     ds1 = SequenceDataset("dataset/dataset1", K=K)
     ds2 = SequenceDataset("dataset/dataset2", K=K)
     ds3 = SequenceDataset("dataset/dataset3", K=K)
+    ds5 = SequenceDataset("dataset/dataset5", K=K)
 
     print("Sequence samples ds1:", len(ds1))
     print("Sequence samples ds2:", len(ds2))
     print("Sequence samples ds3:", len(ds3))
+    print("Sequence samples ds5:", len(ds5))
 
     train1, val1 = split_dataset(ds1)
     train2, val2 = split_dataset(ds2)
     train3, val3 = split_dataset(ds3)
+    train5, val5 = split_dataset(ds5)
 
-    train_ds = ConcatDataset([train1, train2, train3])
-    val_ds   = ConcatDataset([val1, val2, val3])
+    train_ds = ConcatDataset([train1, train2, train3, train5])
+    val_ds   = ConcatDataset([val1, val2, val3, val5])
 
     print("Train samples total:", len(train_ds))
     print("Val samples total  :", len(val_ds))
@@ -222,7 +225,7 @@ def main():
     plt.legend()
     plt.tight_layout()
 
-    out_plot = os.path.join(OUT_DIR, f"dynamics_multistep_k{K}_loss_ds3.png")
+    out_plot = os.path.join(OUT_DIR, f"dynamics_multistep_k{K}_loss_ds5.png")
     plt.savefig(out_plot, dpi=200)
     plt.close()
     print("Saved loss curve:", out_plot)

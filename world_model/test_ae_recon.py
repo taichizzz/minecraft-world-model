@@ -10,9 +10,9 @@ from PIL import Image
 from model import AutoEncoder
 
 # ---- Config ----
-DATASET_DIR = "dataset/dataset1"  
-AE_WEIGHTS  = "ae4.pth"          
-OUT_DIR     = "world_model_out"
+DATASET_DIR = "dataset/dataset3"  
+AE_WEIGHTS  = "ae6.pth"          
+OUT_DIR     = "world_model_out/April6th"
 N_SAMPLES   = 8                  # number of frames to visualize
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
