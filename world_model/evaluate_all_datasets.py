@@ -10,19 +10,18 @@ from dynamics_model import DynamicsMLP
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-AE_WEIGHTS = "ae6.pth"
-DYN_WEIGHTS = "dynamics_multistep_k7.pth"   
+AE_WEIGHTS = "ae4.pth"
+DYN_WEIGHTS = "dynamics_multistep_k5.pth"   
 
 LATENT_DIM = 128
 NUM_ACTIONS = 4
 N_EPISODES = 10
-OUT_CSV = "world_model_out/April6th/all_eval_results2.csv"
+OUT_CSV = "world_model_out/April6th/original_results.csv"
 
 DATASETS = [
     "dataset/dataset1",
     "dataset/dataset2",
     "dataset/dataset3",
-    "dataset/dataset5",
 ]
 
 K_VALUES = [16, 32]

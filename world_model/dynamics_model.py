@@ -24,3 +24,24 @@ class DynamicsMLP(nn.Module):
         a_onehot = F.one_hot(a, num_classes=self.num_actions).float()
         x = torch.cat([z, a_onehot], dim=1)
         return self.net(x)
+
+class DynamicsTurningMLP(nn.Module):
+    def __init__(self, latent_dim=128, num_actions=3, hidden=512):
+        super().__init__()
+        self.input_proj = nn.Linear(latent_dim + num_actions, hidden)
+        
+        self.block1 = nn.Sequential(
+            nn.LayerNorm(hidden), nn.Linear(hidden, hidden), nn.ReLU()
+        )
+        self.block2 = nn.Sequential(
+            nn.LayerNorm(hidden), nn.Linear(hidden, hidden), nn.ReLU()
+        )
+        self.output = nn.Linear(hidden, latent_dim)
+
+    def forward(self, z, a):
+        a_onehot = F.one_hot(a, num_classes=self.num_actions).float()
+        x = torch.cat([z, a_onehot], dim=1)
+        h = F.relu(self.input_proj(x))
+        h = h + self.block1(h)
+        h = h + self.block2(h)
+        return self.output(h)
