@@ -10,9 +10,9 @@ from PIL import Image
 from model import AutoEncoder
 
 # ---- Config ----
-DATASET_DIR = "dataset/dataset3"  
-AE_WEIGHTS  = "ae6.pth"          
-OUT_DIR     = "world_model_out/April6th"
+DATASET_DIR = "dataset/dataset2_turn"  
+AE_WEIGHTS  = "aeturn1.pth"          
+OUT_DIR     = "world_model_out/April17th"
 N_SAMPLES   = 8                  # number of frames to visualize
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -94,7 +94,7 @@ def main():
     grid[0:row1.shape[0], :, :] = row1
     grid[row1.shape[0] + pad:row1.shape[0]*2 + pad, :, :] = row2
 
-    out_path = os.path.join(OUT_DIR, "ae_recon_grid3_dataset3.png")
+    out_path = os.path.join(OUT_DIR, "ae_recon_grid3_dataset2_turn.png")
     Image.fromarray(grid).save(out_path)
     print("Saved:", out_path)
     print("Top row = original, bottom row = reconstruction")

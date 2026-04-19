@@ -13,13 +13,13 @@ BETA = 0.01
 dataset1 = TransitionDataset("dataset/dataset1")
 dataset2 = TransitionDataset("dataset/dataset2")
 dataset3 = TransitionDataset("dataset/dataset3")
-dataset5 = TransitionDataset("dataset/dataset5")
-combined_dataset = ConcatDataset([dataset1, dataset2, dataset3, dataset5])
+dataset6 = TransitionDataset("dataset/dataset6")
+combined_dataset = ConcatDataset([dataset1, dataset2, dataset3, dataset6])
 
 print("dataset1 frames:", len(dataset1))
 print("dataset2 frames:", len(dataset2))
 print("dataset3 frames:", len(dataset3))
-print("dataset5 frames:", len(dataset5))
+print("dataset6 frames:", len(dataset6))
 print("combined frames:", len(combined_dataset))
 
 loader = DataLoader(combined_dataset, batch_size=64, shuffle=True, drop_last=True)
@@ -30,7 +30,7 @@ model.load_state_dict(torch.load("ae4.pth", map_location=DEVICE))
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
 print("Starting training...")
 print("Using device:", DEVICE)
-for epoch in range(30):
+for epoch in range(50):
     print("Epoch", epoch, "started")
     model.train()
     total_loss = 0.0
@@ -71,8 +71,8 @@ for epoch in range(30):
 
     print(f"Epoch {epoch}: loss={total_loss/len(loader):.6f}")
 
-torch.save(model.state_dict(), "ae6.pth")
-torch.save(model.encoder.state_dict(), "encoder6.pth") 
+torch.save(model.state_dict(), "aeturn1.pth")
+torch.save(model.encoder.state_dict(), "encoderturn1.pth") 
 
-print("Saved ae6.pth")
-print("Saved encoder6.pth")
+print("Saved aeturn1.pth")
+print("Saved encoderturn1.pth")

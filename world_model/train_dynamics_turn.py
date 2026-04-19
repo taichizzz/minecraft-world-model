@@ -8,19 +8,16 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 
 from model import AutoEncoder
-from dynamics_model import DynamicsMLP
+from dynamics_model import DynamicsMLP, DynamicsTurningMLP
 from sequence_dataset import SequenceDataset
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-# =========================
-# CONFIG
-# =========================
 AE_WEIGHTS = "aeturn1.pth"
-OUT_WEIGHTS = "dynamics_multistep_turn.pth"
+OUT_WEIGHTS = "dynamics_turn_1.pth"
 
 LATENT_DIM = 128
-NUM_ACTIONS = 4
+NUM_ACTIONS = 3
 
 BATCH = 64
 EPOCHS = 100
@@ -44,15 +41,6 @@ def set_seed(seed: int):
 
 
 def multistep_latent_loss(dyn, z0, acts, z_target):
-    """
-    dyn: dynamics model
-    z0: (B, latent_dim)
-    acts: (B, K) long
-    z_target: (B, K, latent_dim)
-
-    absolute dynamics version:
-        z_{t+1} = dyn(z_t, a_t)
-    """
     z = z0
     preds = []
 
@@ -79,23 +67,14 @@ def main():
     print("DEVICE:", DEVICE)
     print("Building sequence datasets...")
 
-    ds1 = SequenceDataset("dataset/dataset1", K=K)
-    ds2 = SequenceDataset("dataset/dataset2", K=K)
-    ds3 = SequenceDataset("dataset/dataset3", K=K)
-    ds7 = SequenceDataset("dataset/dataset7", K=K)
+    ds2 = SequenceDataset("dataset/dataset2_turn", K=K)
 
-    print("Sequence samples ds1:", len(ds1))
     print("Sequence samples ds2:", len(ds2))
-    print("Sequence samples ds3:", len(ds3))
-    print("Sequence samples ds7:", len(ds7))
 
-    train1, val1 = split_dataset(ds1)
     train2, val2 = split_dataset(ds2)
-    train3, val3 = split_dataset(ds3)
-    train7, val7 = split_dataset(ds7)
 
-    train_ds = ConcatDataset([train1, train2, train3, train7])
-    val_ds   = ConcatDataset([val1, val2, val3, val7])
+    train_ds = ConcatDataset([train2])
+    val_ds   = ConcatDataset([val2])
 
     print("Train samples total:", len(train_ds))
     print("Val samples total  :", len(val_ds))
@@ -115,33 +94,27 @@ def main():
         drop_last=False,
         num_workers=0
     )
-
-    # -------------------------
-    # Load frozen AE
-    # -------------------------
+    # load pretrained AE
     ae = AutoEncoder(latent_dim=LATENT_DIM).to(DEVICE)
     ae.load_state_dict(torch.load(AE_WEIGHTS, map_location=DEVICE))
     ae.eval()
     for p in ae.parameters():
         p.requires_grad = False
 
-    # -------------------------
-    # Dynamics model
-    # -------------------------
-    dyn = DynamicsMLP(
+    # load dynamics model
+    dyn = DynamicsTurningMLP(
         latent_dim=LATENT_DIM,
         num_actions=NUM_ACTIONS,
-        hidden=256
+        hidden=512
     ).to(DEVICE)
 
     opt = optim.Adam(dyn.parameters(), lr=LR)
 
     train_losses = []
     val_losses = []
+    best_val = float('inf')
 
-    # =========================
-    # TRAIN
-    # =========================
+    # training loop
     for epoch in range(EPOCHS):
         dyn.train()
         total = 0.0
@@ -157,8 +130,8 @@ def main():
                 flat = frames.reshape(B * (K + 1), 3, 64, 64)
                 z_all = ae.encoder(flat).view(B, K + 1, LATENT_DIM)
 
-            z0 = z_all[:, 0]         # (B, latent_dim)
-            z_target = z_all[:, 1:]  # (B, K, latent_dim)
+            z0 = z_all[:, 0]       
+            z_target = z_all[:, 1:]
 
             loss, z_pred = multistep_latent_loss(dyn, z0, acts, z_target)
 
@@ -180,10 +153,6 @@ def main():
 
         train_loss = total / len(train_loader)
         train_losses.append(train_loss)
-
-        # =========================
-        # VALIDATION
-        # =========================
         dyn.eval()
         vtotal = 0.0
 
@@ -207,15 +176,14 @@ def main():
 
         print(f"Epoch {epoch:02d} | Train: {train_loss:.6f} | Val: {val_loss:.6f}")
 
-    # =========================
-    # SAVE MODEL
-    # =========================
-    torch.save(dyn.state_dict(), OUT_WEIGHTS)
-    print("Saved", OUT_WEIGHTS)
+        if val_loss < best_val:
+            best_val = val_loss
+            torch.save(dyn.state_dict(), OUT_WEIGHTS)
+            print(f"  -> saved best model (val={val_loss:.6f})")
 
-    # =========================
-    # SAVE LOSS CURVE
-    # =========================
+    print(f"Training done. Best val loss: {best_val:.6f}")
+    print("Best model saved to:", OUT_WEIGHTS)
+
     plt.figure(figsize=(6, 4))
     plt.plot(train_losses, label="Train")
     plt.plot(val_losses, label="Val")
@@ -225,7 +193,7 @@ def main():
     plt.legend()
     plt.tight_layout()
 
-    out_plot = os.path.join(OUT_DIR, f"dynamics_multistep_k{K}_loss_ds7.png")
+    out_plot = os.path.join(OUT_DIR, f"dynamics_turn_k{K}_loss_ds_turn.png")
     plt.savefig(out_plot, dpi=200)
     plt.close()
     print("Saved loss curve:", out_plot)
