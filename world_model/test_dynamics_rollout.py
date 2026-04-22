@@ -155,19 +155,19 @@ import matplotlib.pyplot as plt
 import glob
 
 from model import AutoEncoder
-from dynamics_model import DynamicsMLP
+from dynamics_model import DynamicsMLP, DynamicsTurningMLP
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-DATASET_DIR = "dataset/dataset2"
-AE_WEIGHTS = "ae6.pth"
-DYN_WEIGHTS = "dynamics_multistep_k7.pth"
+DATASET_DIR = "dataset/dataset2_turn"
+AE_WEIGHTS = "aeturn1.pth"
+DYN_WEIGHTS = "dynamics_turn_2.pth"
 
 LATENT_DIM = 128
-NUM_ACTIONS = 4
+NUM_ACTIONS = 3
 
 # rollout length
-K = 16
+K = 32
 
 OUT_DIR = "world_model_out/April6th"
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -218,7 +218,7 @@ def main():
     ae.eval()
 
     #loading dynamics
-    dyn = DynamicsMLP(latent_dim=LATENT_DIM, num_actions=NUM_ACTIONS, hidden=256).to(DEVICE)
+    dyn = DynamicsTurningMLP(latent_dim=LATENT_DIM, num_actions=NUM_ACTIONS, hidden=512).to(DEVICE)
     dyn.load_state_dict(torch.load(DYN_WEIGHTS, map_location=DEVICE))
     dyn.eval()
 
@@ -272,7 +272,7 @@ def main():
     axes[1, 0].set_ylabel("Pred", fontsize=10)
     plt.tight_layout()
 
-    out_path = os.path.join(OUT_DIR, "dyn_rollout_multistep_test.png")
+    out_path = os.path.join(OUT_DIR, "dyn_rollout_turn_test_K32.png")
     plt.savefig(out_path, dpi=200)
     plt.close(fig)
     print("Saved:", out_path)

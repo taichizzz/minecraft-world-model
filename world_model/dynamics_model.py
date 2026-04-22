@@ -28,6 +28,9 @@ class DynamicsMLP(nn.Module):
 class DynamicsTurningMLP(nn.Module):
     def __init__(self, latent_dim=128, num_actions=3, hidden=512):
         super().__init__()
+        self.latent_dim = latent_dim
+        self.num_actions = num_actions
+        
         self.input_proj = nn.Linear(latent_dim + num_actions, hidden)
         
         self.block1 = nn.Sequential(

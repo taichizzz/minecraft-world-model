@@ -14,23 +14,28 @@ dataset1 = TransitionDataset("dataset/dataset1")
 dataset2 = TransitionDataset("dataset/dataset2")
 dataset3 = TransitionDataset("dataset/dataset3")
 dataset6 = TransitionDataset("dataset/dataset6")
-combined_dataset = ConcatDataset([dataset1, dataset2, dataset3, dataset6])
+dataset2_turn = TransitionDataset("dataset/dataset2_turn")
+dataset3_turn = TransitionDataset("dataset/dataset3_turn")
+combined_dataset = ConcatDataset([dataset1, dataset2, dataset3, dataset6, dataset2_turn, dataset3_turn])
 
 print("dataset1 frames:", len(dataset1))
 print("dataset2 frames:", len(dataset2))
 print("dataset3 frames:", len(dataset3))
 print("dataset6 frames:", len(dataset6))
+print("dataset2_turn frames:", len(dataset2_turn))
+print("dataset3_turn frames:", len(dataset3_turn))
 print("combined frames:", len(combined_dataset))
+
 
 loader = DataLoader(combined_dataset, batch_size=64, shuffle=True, drop_last=True)
 
 model = AutoEncoder(latent_dim=128).to(DEVICE)
-model.load_state_dict(torch.load("ae4.pth", map_location=DEVICE))
+model.load_state_dict(torch.load("aeturn1.pth", map_location=DEVICE))
 
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
 print("Starting training...")
 print("Using device:", DEVICE)
-for epoch in range(50):
+for epoch in range(80):
     print("Epoch", epoch, "started")
     model.train()
     total_loss = 0.0
@@ -71,8 +76,8 @@ for epoch in range(50):
 
     print(f"Epoch {epoch}: loss={total_loss/len(loader):.6f}")
 
-torch.save(model.state_dict(), "aeturn1.pth")
-torch.save(model.encoder.state_dict(), "encoderturn1.pth") 
+torch.save(model.state_dict(), "aeturn2.pth")
+torch.save(model.encoder.state_dict(), "encoderturn2.pth") 
 
-print("Saved aeturn1.pth")
-print("Saved encoderturn1.pth")
+print("Saved aeturn2.pth")
+print("Saved encoderturn2.pth")
