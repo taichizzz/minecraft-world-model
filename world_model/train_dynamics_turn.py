@@ -13,7 +13,7 @@ from sequence_dataset import SequenceDataset
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-AE_WEIGHTS = "aeturn1.pth"
+AE_WEIGHTS = "aeturn2.pth"
 OUT_WEIGHTS = "dynamics_turn_1.pth"
 
 LATENT_DIM = 128
@@ -25,7 +25,7 @@ LR = 1e-3
 GRAD_CLIP = 1.0
 
 # short multi-step horizon first
-K = 4
+K = 16
 
 SEED = 42
 OUT_DIR = "world_model_out"
@@ -68,13 +68,16 @@ def main():
     print("Building sequence datasets...")
 
     ds2 = SequenceDataset("dataset/dataset2_turn", K=K)
+    ds3 = SequenceDataset("dataset/dataset3_turn", K=K)
 
     print("Sequence samples ds2:", len(ds2))
+    print("Sequence samples ds3:", len(ds3))
 
     train2, val2 = split_dataset(ds2)
+    train3, val3 = split_dataset(ds3)
 
-    train_ds = ConcatDataset([train2])
-    val_ds   = ConcatDataset([val2])
+    train_ds = ConcatDataset([train2, train3])
+    val_ds   = ConcatDataset([val2, val3])
 
     print("Train samples total:", len(train_ds))
     print("Val samples total  :", len(val_ds))

@@ -10,13 +10,13 @@ from dynamics_model import DynamicsMLP
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-AE_WEIGHTS = "ae4.pth"
-DYN_WEIGHTS = "dynamics_multistep_k5.pth"
+AE_WEIGHTS = "aeturn1.pth"
+DYN_WEIGHTS = "dynamics_multistep_turn.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 4
 
-DATASET_DIR = "dataset/dataset3"   # change to dataset2 / dataset3
+DATASET_DIR = "dataset/dataset7"   # change to dataset2 / dataset3
 K = 16
 N_CANDIDATES = 128
 

@@ -6,21 +6,21 @@ import torch.nn.functional as F
 import matplotlib.pyplot as plt
 
 from model import AutoEncoder
-from dynamics_model import DynamicsMLP
+from dynamics_model import DynamicsMLP, DynamicsTurningMLP
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # =========================
 # CONFIG
 # =========================
-DATASET_DIR = "dataset/dataset5"   # change to dataset2 when needed
-AE_WEIGHTS = "ae6.pth"
+DATASET_DIR = "dataset/dataset2_turn"  
+AE_WEIGHTS = "aeturn1.pth"
 # DYN_WEIGHTS = "dynamics_balanced2.pth"
-DYN_WEIGHTS = "dynamics_multistep_k7.pth"
+DYN_WEIGHTS = "dynamics_turn_1.pth"
 
 LATENT_DIM = 128
-NUM_ACTIONS = 4
-K = 32
+NUM_ACTIONS = 3
+K = 16
 N_EPISODES = 10
 
 OUT_DIR = "world_model_out/April6th"
@@ -135,7 +135,7 @@ def main():
     ae.load_state_dict(torch.load(AE_WEIGHTS, map_location=DEVICE))
     ae.eval()
 
-    dyn = DynamicsMLP(latent_dim=LATENT_DIM, num_actions=NUM_ACTIONS, hidden=256).to(DEVICE)
+    dyn = DynamicsTurningMLP(latent_dim=LATENT_DIM, num_actions=NUM_ACTIONS, hidden=512).to(DEVICE)
     dyn.load_state_dict(torch.load(DYN_WEIGHTS, map_location=DEVICE))
     dyn.eval()
 
@@ -189,7 +189,7 @@ def main():
     plt.tight_layout()
 
     dataset_name = os.path.basename(DATASET_DIR.rstrip("/\\"))
-    out_curve = os.path.join(OUT_DIR, f"avg_rollout_error_curve_{dataset_name}K32_multistep10_2.png")
+    out_curve = os.path.join(OUT_DIR, f"avg_rollout_error_curve_{dataset_name}K16.png")
     plt.savefig(out_curve, dpi=200)
     plt.close()
     print("\nSaved averaged error curve to:", out_curve)
@@ -197,7 +197,7 @@ def main():
     # -------------------------
     # Save text summary
     # -------------------------
-    out_txt = os.path.join(OUT_DIR, f"avg_eval_summary_{dataset_name}K32_multistep10_2.txt")
+    out_txt = os.path.join(OUT_DIR, f"avg_eval_summary_{dataset_name}K16.txt")
     with open(out_txt, "w", encoding="utf-8") as f:
         f.write(f"Dataset: {DATASET_DIR}\n")
         f.write(f"AE: {AE_WEIGHTS}\n")
