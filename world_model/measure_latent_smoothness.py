@@ -10,8 +10,9 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 DATASET_DIR = "dataset/dataset2_turn"
 
 # AE checkpoints to compare. Missing files are skipped with a warning.
-# aeturn1 is the current temporal-smoothness AE; ae3/ae4 are pre-smoothness baselines.
-AE_CHECKPOINTS = ["aeturn1.pth", "ae4.pth", "ae3.pth"]
+# aeturn2 trained on dataset2_turn + dataset3_turn; aeturn1 on dataset2_turn only;
+# ae3/ae4 are pre-smoothness baselines for reference.
+AE_CHECKPOINTS = ["aeturn3.pth", "aeturn2.pth", "aeturn1.pth", "ae4.pth", "ae3.pth"]
 
 LATENT_DIM = 128
 N_EPISODES = 10            # how many episodes to average over

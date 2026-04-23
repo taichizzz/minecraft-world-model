@@ -11,8 +11,8 @@ from dynamics_model import DynamicsTurningMLP
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # ============= CONFIG =============
-AE_WEIGHTS = "aeturn1.pth"
-DYN_WEIGHTS = "dynamics_turn_2.pth" 
+AE_WEIGHTS = "aeturn2.pth"
+DYN_WEIGHTS = "dynamics_turn_1.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 3 
@@ -20,7 +20,7 @@ NUM_ACTIONS = 3
 DATASET_DIR = "dataset/dataset2_turn"
 
 # how far ahead the planner imagines per replan
-PLAN_HORIZON = 12
+PLAN_HORIZON = 4
 
 # how many random plans to sample at each step
 NUM_SAMPLES = 512
@@ -36,6 +36,10 @@ DIST_THRESHOLD = 0.0005
 
 # action sampling weights (matches data collection: 4=move, 3=turnL, 3=turnR)
 ACTION_WEIGHTS = [4.0, 3.0, 3.0]
+
+# weight on pixel-space goal matching (score = latent_mse + PIXEL_COST_WEIGHT * pixel_mse)
+# 0.0 disables pixel term and falls back to pure-latent scoring.
+PIXEL_COST_WEIGHT = 1.0
 
 OUT_DIR = "world_model_out/April20th"
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -99,49 +103,41 @@ def load_random_episode_with_movement():
     raise RuntimeError("Could not find episode with sufficient movement")
 
 
-def plan_one_action(z_current, z_goal, dyn, num_actions, horizon, num_samples):
+def plan_one_action(z_current, z_goal, goal_img, dyn, ae,
+                    num_actions, horizon, num_samples):
     """
-    Sample many action sequences (biased toward training distribution),
-    roll them out, score by MINIMUM distance along the trajectory.
+    Sample many action sequences, roll them out, score by FINAL-step cost:
+        latent_mse(z_final, z_goal) + PIXEL_COST_WEIGHT * pixel_mse(decode(z_final), goal_img)
     """
-    # FIX 1: weighted action sampling matching training distribution
     weights = torch.tensor(ACTION_WEIGHTS, device=DEVICE)
     flat_actions = torch.multinomial(
         weights, num_samples * horizon, replacement=True
     )
     actions = flat_actions.view(num_samples, horizon).long()
 
-    # repeat z_current for each candidate
     z = z_current.unsqueeze(0).expand(num_samples, -1).contiguous()
-
-    # FIX 2: track ALL latents along the trajectory, not just final
-    all_z = [z]
     with torch.no_grad():
         for t in range(horizon):
             a_t = actions[:, t]
             z = dyn(z, a_t)
-            all_z.append(z)
 
-    # stack: (num_samples, horizon+1, latent_dim)
-    all_z_stack = torch.stack(all_z, dim=1)
+        latent_scores = ((z - z_goal.unsqueeze(0)) ** 2).mean(dim=1)
 
-    # distance at every step
-    z_goal_batch = z_goal.view(1, 1, -1).expand(
-        num_samples, horizon + 1, -1
-    )
-    distances = ((all_z_stack - z_goal_batch) ** 2).mean(dim=2)
-    # (num_samples, horizon+1)
-
-    # FIX 2 continued: score = MINIMUM distance along trajectory
-    min_distances, min_steps = distances.min(dim=1)
-    scores = min_distances
+        if PIXEL_COST_WEIGHT > 0.0:
+            decoded = ae.decoder(z)  # (num_samples, 3, 64, 64)
+            pixel_scores = ((decoded - goal_img) ** 2).mean(dim=(1, 2, 3))
+            scores = latent_scores + PIXEL_COST_WEIGHT * pixel_scores
+        else:
+            scores = latent_scores
+            pixel_scores = torch.zeros_like(latent_scores)
 
     best_idx = scores.argmin().item()
     best_first_action = actions[best_idx, 0].item()
     best_score = scores[best_idx].item()
-    best_min_step = min_steps[best_idx].item()
+    best_latent = latent_scores[best_idx].item()
+    best_pixel = pixel_scores[best_idx].item()
 
-    return best_first_action, best_score, best_min_step
+    return best_first_action, best_score, best_latent, best_pixel
 
 
 def main():
@@ -193,8 +189,8 @@ def main():
             reached_goal = True
             break
 
-        action, score, min_step = plan_one_action(
-            z_current, z_goal, dyn,
+        action, score, lat_score, pix_score = plan_one_action(
+            z_current, z_goal, goal_img, dyn, ae,
             num_actions=NUM_ACTIONS,
             horizon=PLAN_HORIZON,
             num_samples=NUM_SAMPLES
@@ -215,8 +211,8 @@ def main():
         action_name = ["move", "turnL", "turnR"][action]
         print(
             f"step {step:02d} | action={action} ({action_name}) "
-            f"| dist_to_goal={dist:.6f} | best_plan_min_dist={score:.6f} "
-            f"(at imagined step {min_step})"
+            f"| dist_to_goal={dist:.6f} | plan_score={score:.6f} "
+            f"(lat={lat_score:.6f}, pix={pix_score:.6f})"
         )
 
     if not reached_goal:
