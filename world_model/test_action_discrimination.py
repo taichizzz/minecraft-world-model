@@ -31,8 +31,8 @@ from dynamics_model import DynamicsTurningMLP
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-AE_WEIGHTS = "aeturn1.pth"
-DYN_WEIGHTS = "dynamics_turn_2.pth"
+AE_WEIGHTS = "aeturn2.pth"
+DYN_WEIGHTS = "dynamics_turn_1.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 3
@@ -166,9 +166,11 @@ def main():
     else:
         print("  dynamics barely moves the latent at all (identity collapse)")
 
-    # reference: consec step from measure_latent_smoothness.py was ~0.57 on aeturn1
-    print("\nReference: on aeturn1 the mean real consec step was ~0.57.")
-    print("If action_step is << 0.57 the dynamics is much smaller than real motion.")
+    # reference consec step was ~0.57 on aeturn1; re-measure with aeturn2 via
+    # measure_latent_smoothness.py if you want a direct aeturn2-based baseline.
+    print("\nReference: mean real consec step on aeturn1 was ~0.57 "
+          "(re-run measure_latent_smoothness.py with aeturn2 for an exact match).")
+    print("If action_step is << that value, dynamics predicts much less motion than real.")
 
     # ---- visualization ----
     rows = []

@@ -13,8 +13,8 @@ from sequence_dataset import SequenceDataset
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-AE_WEIGHTS = "aeturn2.pth"
-OUT_WEIGHTS = "dynamics_turn_1.pth"
+AE_WEIGHTS = "aeturn3.pth"
+OUT_WEIGHTS = "dynamics_turn_3.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 3
