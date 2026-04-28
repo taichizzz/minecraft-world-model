@@ -11,8 +11,8 @@ from dynamics_model import DynamicsTurningMLP
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # ============= CONFIG =============
-AE_WEIGHTS = "aeturn2.pth"
-DYN_WEIGHTS = "dynamics_turn_1.pth"
+AE_WEIGHTS = "aeturn3.pth"
+DYN_WEIGHTS = "dynamics_turn_3.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 3 
@@ -20,7 +20,7 @@ NUM_ACTIONS = 3
 DATASET_DIR = "dataset/dataset2_turn"
 
 # how far ahead the planner imagines per replan
-PLAN_HORIZON = 4
+PLAN_HORIZON = 16
 
 # how many random plans to sample at each step
 NUM_SAMPLES = 512
@@ -31,8 +31,9 @@ CONTROL_STEPS = 16
 # distance between start and goal frame in the recorded episode
 GOAL_OFFSET = 16
 
-# stop early if we get within this latent distance of the goal
-DIST_THRESHOLD = 0.0005
+# stop early if we get within this latent distance of the goal.
+# scaled up ~16x from 0.0005 because aeturn3 latents are ~4x larger than aeturn2 (MSE ~16x).
+DIST_THRESHOLD = 0.008
 
 # action sampling weights (matches data collection: 4=move, 3=turnL, 3=turnR)
 ACTION_WEIGHTS = [4.0, 3.0, 3.0]
