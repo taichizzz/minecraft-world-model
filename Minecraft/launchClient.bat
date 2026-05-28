@@ -5,6 +5,14 @@
 :: Works by generating a Minecraft config file from the commandline arguments,
 :: which the Mod then loads at initialisation time.
 
+:: ===== Force JDK (needed for ForgeGradle's compileJava) =====
+:: The default system Java is a JRE which lacks javac/tools.jar and breaks the build.
+:: Pin to the Eclipse Adoptium JDK 8 install.
+set "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-8.0.472.8-hotspot"
+set "PATH=%JAVA_HOME%\bin;%PATH%"
+echo Using JAVA_HOME=%JAVA_HOME%
+"%JAVA_HOME%\bin\javac.exe" -version
+
 REM Command line parser due to dbenham - see here: http://stackoverflow.com/a/8162578
 
 setlocal enableDelayedExpansion
