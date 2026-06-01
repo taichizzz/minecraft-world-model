@@ -125,6 +125,36 @@ _ENV_CONFIGS = {
         "obstacles_gt": [(-2, -1), (-1, 2), (2, 1), (-3, 0), (0, 3),
                          (1, -2), (3, -1), (-2, 3), (3, 2), (-1, -3)],
     },
+    # ── Generalization envs: different forms (layouts) and factors
+    # (materials/lighting). Same 11x11 frame + diamond goal at (4,4) so the
+    # trained world model can be tested directly. ──
+    "env4": {
+        "mission": "missions/env4random.xml",
+        "occupied": {
+            (-3, 1), (-1, -1), (1, 3), (0, 2), (1, -2), (2, 2), (3, 0),
+            (3, -3), (-2, -3), (-3, 3),
+            (4, 4), (-4, 4), (4, -4),
+        },
+        "obstacles_gt": [(-3, 1), (-1, -1), (1, 3), (0, 2), (1, -2),
+                         (2, 2), (3, 0), (3, -3), (-2, -3), (-3, 3)],
+    },
+    "env5": {
+        "mission": "missions/env5random.xml",
+        "occupied": {
+            (-2, -2), (2, 1), (-2, 2), (-3, -1), (0, 0), (1, 2), (2, -2), (3, 2),
+            (4, 4), (-4, 4), (4, -4),
+        },
+        "obstacles_gt": [(-2, -2), (2, 1), (-2, 2), (-3, -1), (0, 0),
+                         (1, 2), (2, -2), (3, 2)],
+    },
+    "env6": {
+        "mission": "missions/env6random.xml",
+        "occupied": {
+            (-2, 1), (1, -2), (2, 2), (-1, -1), (0, 3),
+            (4, 4), (-4, 4), (4, -4),
+        },
+        "obstacles_gt": [(-2, 1), (1, -2), (2, 2), (-1, -1), (0, 3)],
+    },
 }
 
 _cfg = _ENV_CONFIGS[ENV]
@@ -144,7 +174,7 @@ def pick_random_spawn(rng=None):
 
 AE_WEIGHTS = "ae_multienv.pth"
 DYN_WEIGHTS = "dynamics_multienv.pth"
-VALUE_WEIGHTS = "value_head_multienv.pth"
+VALUE_WEIGHTS = "value_head_dist.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 3
@@ -166,6 +196,7 @@ W_DIST    = -100.0      # distance to target (negative = closer is better)
 W_BLOCK   = -10.0       # blocked moves penalty
 W_SUMDIST = -1.0        # cumulative path distance
 W_V       = 50.0        # value prediction (positive = higher V is better)
+GAMMA_V   = 0.95        # discount for per-step value sum: score += W_V * Σ γ^h V(z_h)
 
 # ── Distance-dependent V weight ────────────────────────────────────
 # When the agent is very close to the diamond (dist ≤ 1), V can hurt:
@@ -175,6 +206,47 @@ W_V       = 50.0        # value prediction (positive = higher V is better)
 # At dist=0: weight=0  (V is silenced, map distance decides)
 # At dist≥V_FADE_DIST: weight=W_V (full world-model contribution)
 V_FADE_DIST = 3.0       # distance at which V reaches full weight
+
+# ── Localization noise (Track C necessity proof) ───────────────────
+# Models how the agent's SELF-REPORTED position degrades. Only the
+# geometric terms (dist/blocked/sum_dist) and map-building consume this
+# corrupted estimate; the world-model value term reads PIXELS, so it is
+# immune. Success/SPL are ALWAYS scored on the TRUE position.
+#
+#   POS_NOISE_MODEL:
+#     "drift"  random walk: offset += N(0,std) every step. Realistic
+#              odometry/SLAM error that accumulates over time (default).
+#     "bias"   one constant offset ~ N(0,std) per episode, persistent.
+#     "jitter" fresh N(0,std) every step. Pathological — averages out and
+#              flips grid cells each frame; kept only for comparison.
+#   POS_NOISE_STD: std in blocks. 0.0 == off (nominal agent, no change).
+POS_NOISE_MODEL = "drift"
+POS_NOISE_STD = 0.0
+_pos_noise_offset = np.array([0.0, 0.0])   # live per-episode localization error
+
+
+def reset_pos_noise():
+    """Reset the localization-error state at the start of each episode."""
+    global _pos_noise_offset
+    if POS_NOISE_STD > 0.0 and POS_NOISE_MODEL == "bias":
+        _pos_noise_offset = np.random.normal(0.0, POS_NOISE_STD, size=2)
+    else:
+        _pos_noise_offset = np.array([0.0, 0.0])
+
+
+def noisy_pos(x_true, z_true):
+    """Position the PLANNER believes, per POS_NOISE_MODEL. Advances the
+    drift/jitter state; 'bias' stays fixed from reset_pos_noise(). Metrics
+    still use the true coordinates."""
+    global _pos_noise_offset
+    if POS_NOISE_STD <= 0.0:
+        return x_true, z_true
+    if POS_NOISE_MODEL == "drift":
+        _pos_noise_offset = _pos_noise_offset + np.random.normal(0.0, POS_NOISE_STD, size=2)
+    elif POS_NOISE_MODEL == "jitter":
+        _pos_noise_offset = np.random.normal(0.0, POS_NOISE_STD, size=2)
+    return (x_true + float(_pos_noise_offset[0]),
+            z_true + float(_pos_noise_offset[1]))
 
 ROOM_HALF = 5
 GRID_LO, GRID_HI = -ROOM_HALF, ROOM_HALF
@@ -414,17 +486,17 @@ def mpc_plan(grid, x, z, yaw, frame, ae, dyn, value, target_cell):
     dist = np.abs(end_gx - target_cell[0]) + np.abs(end_gz - target_cell[1])
     sum_dist = dist_per_step.sum(axis=1)
 
-    # ---- batched dyn rollout for V_pred ----
+    # ---- batched dyn rollout: discounted V sum Σ γ^h V(z_h) ----
     with torch.no_grad():
         img = to_torch_img(frame).to(DEVICE)
         z0 = ae.encoder(img).squeeze(0)            # (latent_dim,)
         z_batch = z0.unsqueeze(0).expand(N, -1).contiguous()
         a_t = torch.from_numpy(seqs).long().to(DEVICE)   # (N, H)
 
+        v_pred = np.zeros(N, dtype=np.float32)
         for h in range(H):
             z_batch = dyn(z_batch, a_t[:, h])
-
-        v_pred = value(z_batch).cpu().numpy()      # (N,)
+            v_pred += (GAMMA_V ** h) * value(z_batch).cpu().numpy()  # (N,)
 
     # ---- score and pick ----
     # Distance-dependent V weight: fade V to 0 when close to target
@@ -515,11 +587,11 @@ def load_models():
 # ============= single episode =============
 DIAMOND_POS = (4.5, 4.5)
 
-def run_episode(agent_host, ae, dyn, value, save=True, verbose=True):
+def run_episode(agent_host, ae, dyn, value, save=True, verbose=True, spawn=None):
     """Run one episode. Returns a stats dict."""
     with open(MISSION_FILE, "r", encoding="utf-8") as f:
         mission_xml = f.read()
-    sx, sz, syaw = pick_random_spawn()
+    sx, sz, syaw = spawn if spawn is not None else pick_random_spawn()
     mission_xml = (mission_xml
                    .replace("{{START_X}}", f"{sx}")
                    .replace("{{START_Z}}", f"{sz}")
@@ -574,12 +646,14 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True):
     grid[:, GRID_SIZE - 1] = OBSTACLE
 
     pos_list, yaw_list, v_list, action_list = [], [], [], []
+    truepos_list = []        # TRUE positions, for success/SPL under POS_NOISE_STD
     prev_x = prev_z = prev_yaw = None
     prev_action = None
     stuck_count = 0
     same_pos_count = 0
     diamond_confirm = 0
     steps_since_diamond_seen = 0   # for stale diamond timeout
+    reset_pos_noise()              # per-episode localization-error state
 
     for step in range(MAX_STEPS):
         ws = agent_host.getWorldState()
@@ -598,8 +672,10 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True):
         if "XPos" not in obs_json or "ZPos" not in obs_json:
             continue
 
-        x = obs_json["XPos"]
-        z_pos = obs_json["ZPos"]
+        x_true = obs_json["XPos"]
+        z_true = obs_json["ZPos"]
+        # corrupt the planner's self-localization; metrics use *_true
+        x, z_pos = noisy_pos(x_true, z_true)
         yaw = obs_json.get("Yaw", 0.0) % 360.0
 
         vf = ws.video_frames[-1]
@@ -651,6 +727,7 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True):
             if verbose:
                 print(f"  [SPIN BREAK: forced move at step {step}]")
             pos_list.append([x, z_pos])
+            truepos_list.append([x_true, z_true])
             yaw_list.append(yaw)
             v_list.append(0.0)
             action_list.append(0)
@@ -674,6 +751,7 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True):
         agent_host.sendCommand(ACTIONS_STR[action_idx])
 
         pos_list.append([x, z_pos])
+        truepos_list.append([x_true, z_true])
         yaw_list.append(yaw)
         v_list.append(v_pred)
         action_list.append(action_idx)
@@ -692,14 +770,14 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True):
         time.sleep(0.25)
 
     # ── Compute stats ──
-    steps = len(pos_list)
+    steps = len(truepos_list)
     if steps > 0:
-        final_x, final_z = pos_list[-1]
+        final_x, final_z = truepos_list[-1]
         dist_to_diamond = abs(final_x - DIAMOND_POS[0]) + abs(final_z - DIAMOND_POS[1])
         success = dist_to_diamond < 2.0
         path_length = sum(
-            np.sqrt((pos_list[i][0] - pos_list[i-1][0])**2
-                    + (pos_list[i][1] - pos_list[i-1][1])**2)
+            np.sqrt((truepos_list[i][0] - truepos_list[i-1][0])**2
+                    + (truepos_list[i][1] - truepos_list[i-1][1])**2)
             for i in range(1, steps)
         )
     else:

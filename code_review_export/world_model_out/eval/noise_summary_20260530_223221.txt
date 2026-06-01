@@ -1,0 +1,7 @@
+Env    Arm         Noise     SR  AvgSteps   AvgSucc     SPL    N
+----------------------------------------------------------------
+env3   map-only        0   80%      94.6      93.5   0.133    5
+env3   map-only      0.1   40%     103.8      96.5   0.143    5
+
+env3   value-MPC       0  100%      84.0      84.0   0.142    5
+env3   value-MPC     0.1    0%     106.6       0.0   0.000    5

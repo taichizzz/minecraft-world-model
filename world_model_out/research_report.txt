@@ -1,0 +1,717 @@
+===== PAGE 1 =====
+Deep Research Report on World Models, Latent
+MPC, Visual Navigation, and Robust Goal
+Grounding for Malmo
+Executive summary
+Your current Malmo setup sits at the intersection of three research threads: learned visual world models,
+short-horizon planning over latent dynamics, and modular visual navigation with explicit goal grounding.
+Structurally, it is closer to PlaNet and TD-MPC than to Dreamer : you encode RGB frames, roll out
+candidate futures in a latent space, and use a value-like term to score short action sequences. Dreamer is
+more relevant as a next-stage reference if you eventually want to learn  policy/value updates inside
+imagination rather than rely on exhaustive  candidate search. PlaNet is the clearest model-based
+planning precedent; TD-MPC is the clearest precedent for short-horizon latent MPC plus a terminal value
+head . 
+The strongest conclusion from the literature is that for a small partially observable environment like env3
+with 64×64 RGB , 3 turning actions , and H=4, your biggest practical bottleneck is probably not latent rollout
+itself. It is more likely goal grounding under visual shift : night lighting, edge blobs, stale hypotheses, and
+single-view false positives. RobustNav shows that embodied navigation agents can degrade sharply under
+visual corruptions and low-light changes; work on low-light vision and corruption robustness shows that
+brightness shifts, blur , and sensor-like artifacts can break detectors unless robustness is explicitly
+engineered through augmentation, adaptation, or enhancement. 
+If you only implement three changes next, the literature suggests a very clear ordering. First, add temporal
+confirmation, edge rejection, and stale-hypothesis timeout  around the HSV+blob detector; these are
+cheap, high-leverage fixes that directly target the failure modes you described and are conceptually aligned
+with probabilistic mapping and tracking. Second, evaluate with multi-start, day/night, and detector-
+ablation protocols  using navigation metrics such as Success Rate  and SPL rather than relying only on
+offline reconstruction or rollout MSE. Third, if classical detection remains brittle, move to a lightweight
+learned detector/classifier  or an open-set grounding model, and calibrate its confidence with uncertainty
+methods so MPC stops overcommitting to weak visual evidence. 
+A final theme is architectural direction. If your immediate goal is a stronger report and a better env3
+pipeline, you do not need to jump straight to a giant end-to-end Dreamer-style system. The literature
+supports a staged progression: start from your current modular stack, make the detector and hypothesis-
+management robust, add a simple belief map, and only then decide whether to replace the deterministic
+autoencoder/dynamics pair with a more task-oriented recurrent latent model such as PlaNet, Dreamer ,
+SLAC, or TD-MPC-style latent control. That staged path is much closer to how successful navigation systems
+such as Active Neural SLAM and Goal-Oriented Semantic Exploration combine learning with explicit maps
+and planners. 3H
+1
+2
+3
+4
+1
+===== PAGE 2 =====
+How the literature maps to your Malmo stack
+The closest conceptual decomposition of your system in the literature is: visual encoder → latent state →
+latent dynamics rollout → terminal scoring/value → MPC selection , with a separate detector and map
+providing external goal evidence. That is a hybrid of world-model planning papers and modular visual-
+navigation papers, rather than a pure end-to-end RL agent. PlaNet explicitly plans in latent space and
+replans every step; TD-MPC uses a task-oriented latent dynamics model plus a terminal value function;
+Active Neural SLAM and Goal-Oriented Semantic Exploration combine learned perception/mapping with
+explicit planning over maps. 
+Two architectural points from the literature are especially important for your setup. First, a representation
+trained only for reconstruction is often weaker for control than a task-oriented latent state . PlaNet’s
+recurrent state-space model, Dreamer’s imagined-value learning, SLAC’s stochastic latent control, and TD-
+MPC’s task-oriented latent dynamics all emphasize that the best latent for acting is not necessarily the one
+with the best pixel MSE. Second, short-horizon MPC gets much stronger when paired with a calibrated
+terminal value . That is precisely the role your value head can play, but only if it is well-grounded and not
+driven by detector false positives. 
+For your specific env3 assumptions, exhaustive search over  action sequences is completely
+reasonable. The literature does not strongly argue that you need deeper search first; instead, it suggests
+that the more urgent improvements are better latent state quality , better goal evidence , and better
+robustness to observation shift . In other words: in your current regime, improving night perception and
+false-positive handling is likely to matter more than increasing H from 4 to 6. That is an inference from the
+model-based RL and embodied-robustness literature, not a direct theorem, but it is well supported by how
+performance collapses under corrupted input even when planning machinery is otherwise sound. 
+Annotated bibliography by topic
+Representation learning
+Auto-Encoding Variational Bayes  — Diederik P. Kingma and Max Welling, 2013, arXiv. This is the
+foundational VAE paper: it formalizes latent-variable autoencoding with an encoder , decoder , KL
+regularization, and the reparameterization trick. For your Malmo setup, it matters because it explains why a
+latent code can be made smooth and sampleable, and why a plain deterministic autoencoder may be
+visually adequate yet comparatively weak as a predictive/control state. 
+CURL: Contrastive Unsupervised Representations for Reinforcement Learning  — Aravind Srinivas,
+Michael Laskin, Pieter Abbeel, 2020, arXiv. CURL shows that strong image-based control can come from
+contrastive representation learning rather than reconstruction alone, especially in low-data settings. For5
+64x64
+RGB
+frame
+AE
+Encoder
+Latent
+state
+z_t
+Latent
+dynamics
+model
+Roll
+out
+candidate
+action
+sequences
+H=4,
+3^H
+candidates
+Terminal
+value
+head
+/
+heuristic
+MPC
+score
+Choose
+first
+action
+Execute
+in
+Malmo
+HSV
++
+blob
+detector
+Goal
+hypothesis
+Occupancy
+/
+belief
+map
+Frontier
+/
+target
+proposal
+6
+3=481
+7
+8
+2
+===== PAGE 3 =====
+you, the key idea is that a latent useful for action selection may benefit from invariances to nuisance
+appearance changes, which is directly relevant to day/night and brightness variation in Malmo. Official code
+is available. 
+Image Augmentation Is All You Need  and DrQ-v2  — Ilya Kostrikov, Denis Yarats, Rob Fergus, 2020; Denis
+Yarats, Rob Fergus, Alessandro Lazaric, Lerrel Pinto, 2021, arXiv / official repo. These papers show that
+simple image augmentation can massively improve image-based RL robustness and sample efficiency, and
+DrQ-v2 became a very strong pixel baseline with publicly released code. For env3, this literature is one of
+the strongest arguments for training any learned detector/value component with brightness, blur , crop, and
+noise augmentation before making architectural changes. 
+Stochastic Latent Actor-Critic  — Alex X. Lee, Anusha Nagabandi, Pieter Abbeel, Sergey Levine, 2019, arXiv.
+SLAC separates latent representation learning from RL in a stochastic latent model for image control. It is
+relevant because it occupies a middle ground between your current modular AE+dynamics design and more
+integrated world-model methods: if you want a learned latent that remains probabilistic but without fully
+adopting Dreamer , SLAC is a natural bridge. 
+Latent dynamics and MPC
+World Models  — David Ha and Jürgen Schmidhuber , 2018, NeurIPS, with interactive project and
+reproduction repo. This paper introduced the influential VAE + recurrent dynamics + small controller
+decomposition and showed that policies can be trained inside learned “dreams.” For your Malmo setup, it is
+the cleanest conceptual ancestor of “encoder → latent z → dynamics model → simple controller ,” and it
+justifies keeping the control part simple while improving the model. Official project material and a
+reproduction repo are available. 
+Learning Latent Dynamics for Planning from Pixels  — Danijar Hafner , Timothy Lillicrap, Ian Fischer ,
+Ruben Villegas, David Ha, Honglak Lee, James Davidson, 2019, ICML, official repo available. PlaNet learns a
+recurrent latent state-space model and performs online planning directly in latent space, executing the first
+action of the best candidate sequence and replanning after each new observation. This is probably the 
+single most relevant paper  for your current planner because your short-horizon candidate evaluation over
+latent rollouts is structurally very similar . 
+Dream to Control: Learning Behaviors by Latent Imagination  — Danijar Hafner , Timothy Lillicrap, Jimmy
+Ba, Mohammad Norouzi, 2019, arXiv / Dreamer repo. Dreamer moves beyond MPC and learns actor-critic
+updates inside imagined latent trajectories. It is relevant to your project as the clearest example of how a
+value function can be learned from  imagined futures rather than used only as a terminal heuristic; if you
+later replace brute-force candidate enumeration with a policy, Dreamer is the natural next paper . 
+Mastering Atari with Discrete World Models  and Mastering Diverse Domains through World Models  —
+Danijar Hafner and colleagues, 2020 and 2023/2025, arXiv / Nature, official repos available. DreamerV2
+introduces discrete latent variables and shows strong visual control from imagined trajectories; DreamerV3
+emphasizes robustness across domains and, notably, its project materials highlight Minecraft diamond
+collection as a benchmark of broad capability. These are highly relevant if you want to position your Malmo
+work against the modern world-model literature and explain why your current system is a small, modular
+version of a much larger research direction. 9
+10
+11
+12
+13
+14
+15
+3
+===== PAGE 4 =====
+Deep Reinforcement Learning in a Handful of Trials using Probabilistic Dynamics Models  — Kurtland
+Chua, Roberto Calandra, Rowan McAllister , Sergey Levine, 2018, arXiv. PETS is the foundational uncertainty-
+aware MPC paper based on probabilistic ensembles and trajectory sampling. Its relevance to your setup is
+not the exact algorithm, but the principle: model uncertainty matters , and ensembles help avoid
+overcommitting to uncertain futures. That same idea transfers naturally to your detector confidence and
+value-head calibration. 
+Temporal Difference Learning for Model Predictive Control  and TD-MPC2  — Nicklas Hansen, Xiaolong
+Wang, Hao Su, 2022 and 2023, arXiv / official repos. TD-MPC combines a task-oriented latent dynamics
+model with a terminal value function learned jointly by TD learning, and TD-MPC2 scales that line further .
+For your current architecture, TD-MPC is arguably the most directly aligned modern reference because it
+explicitly formalizes the exact thing you are doing conceptually: short-horizon latent planning plus a
+value head . Official repos and project pages are available. 
+Model-based Reinforcement Learning: A Survey  and A Survey on Model-based Reinforcement
+Learning  — Thomas Moerland et al., 2020; Fan-Ming Luo et al., 2022, arXiv. These surveys are useful for
+thesis positioning because they organize model learning, uncertainty, planning budgets, and planning-
+learning integration. They help you explain where your work belongs: it is a small-scale, pixel-based, short-
+horizon, partially observable, modular MBRL/navigation system. 
+Visual navigation and mapping
+Occupancy Grids: A Stochastic Spatial Representation for Active Robot Perception  — Alberto Elfes,
+foundational formulation, retrospective arXiv version. This is the classic probabilistic-map idea: represent
+each cell as an occupancy belief and update it incrementally from uncertain observations. For your setup,
+occupancy-grid thinking is exactly the right lens for handling stale or noisy diamond hypotheses and for
+integrating multiple views before committing. 
+Value Iteration Networks  — Aviv Tamar , Yi Wu, Garrett Thomas, Sergey Levine, Pieter Abbeel, 2016, arXiv.
+VIN shows how planning can be embedded as a differentiable computation over spatial structure. It is
+relevant if you want to motivate a future learned planning module over your 11×11 grid or over a local
+belief map, rather than relying only on hand-designed rollout scoring. 
+Neural Map  — Emilio Parisotto and Ruslan Salakhutdinov, 2017, arXiv. Neural Map introduces a structured
+2D spatial memory for partially observable 3D environments. For env3, this is a direct conceptual reference
+for replacing “remembering the last good blob” with a persistent spatial memory of where the diamond and
+obstacles are believed to be. 
+Learning to Explore using Active Neural SLAM  — Devendra Singh Chaplot, Dhiraj Gandhi, Saurabh Gupta,
+Abhinav Gupta, Ruslan Salakhutdinov, 2020, ICLR, official repo available. This paper is especially important
+for you because it explicitly combines a learned mapping module with analytic path planning and
+hierarchical control. It strongly supports a modular design choice for your Malmo work: keep mapping/
+detection/planning somewhat separated, rather than forcing everything into one monolithic end-to-end
+network. 
+Object Goal Navigation using Goal-Oriented Semantic Exploration  — Devendra Singh Chaplot, Dhiraj
+Gandhi, Abhinav Gupta, Ruslan Salakhutdinov, 2020, NeurIPS, official repo available. GOSE builds an16
+17
+18
+19
+20
+21
+22
+4
+===== PAGE 5 =====
+episodic semantic map and uses goal priors to explore toward a target object category. For your project,
+this is one of the best references for how a detector , map, and planner can work together in a closed loop
+for object navigation rather than mere waypoint following. 
+On Evaluation of Embodied Navigation Agents  — Peter Anderson and colleagues, 2018, arXiv. This paper
+standardized important metrics such as Success Rate and SPL, and it remains the right reference for
+evaluating your closed-loop navigation beyond offline loss. It is especially relevant because you can
+compute an exact action-cost shortest path on your 11×11 grid with headings, making SPL very meaningful
+in env3. 
+Habitat: A Platform for Embodied AI Research  — Manolis Savva and colleagues, 2019, arXiv; Habitat-Lab
+and Habitat-Sim official repos. Habitat matters less because you must move away from Malmo immediately,
+and more because it provides the modern benchmark culture for embodied navigation: reproducible tasks,
+standard metrics, and modular simulators. Studying Habitat will improve your evaluation methodology
+even if your experiments stay in Minecraft. 
+Object grounding, detection robustness, and lighting robustness
+DETR: End-to-End Object Detection with Transformers  — Nicolas Carion and colleagues, 2020, official
+repo available. DETR reframes object detection as direct set prediction, removing a large amount of hand-
+crafted pipeline logic. For you, DETR is less about state-of-the-art AP on COCO and more about a possible 
+clean learned replacement  for HSV+blob detection if classical color thresholds remain brittle. Official code
+and pretrained models are available. 
+Grounding DINO  — Shilong Liu and colleagues, 2023, arXiv / official repo. Grounding DINO is an open-set
+detector receiving image-text pairs and can localize arbitrary named objects or referring expressions. For
+Malmo, it is overpowered for a single “diamond” category, but it is a strong reference if you want future-
+proof goal grounding or a language-conditioned object-navigation extension. Official implementation is
+available. 
+Learning to See in the Dark  — Chen Chen, Qifeng Chen, Jia Xu, Vladlen Koltun, 2018, arXiv. This paper
+addresses very low-light visual processing and is relevant because your night failures are a textbook
+distribution-shift problem in illumination and SNR. Even if you do not adopt the full method, it justifies
+treating “night mode” as a distinct perception problem rather than assuming the day-trained detector
+should generalize automatically. 
+Zero-Reference Deep Curve Estimation for Low-Light Image Enhancement  — Chunle Guo and
+colleagues, 2020, CVPR, official repo available. Zero-DCE is a lightweight low-light enhancement method
+with public code. In your stack, it is attractive because it can be inserted as a preprocessor in front of the
+HSV+blob or learned detector , offering a practical way to test whether night failure is mainly due to
+illumination rather than world-model error . 
+Benchmarking Neural Network Robustness to Common Corruptions and Perturbations  and AugMix
+— Dan Hendrycks and collaborators, 2019 and 2020, arXiv. ImageNet-C provided a common-corruption
+benchmark; AugMix showed that simple mixed augmentations can improve robustness and uncertainty
+under corruption shifts. For env3, the lesson is direct: if you train any learned detector or value head,23
+24
+25
+26
+27
+28
+29
+5
+===== PAGE 6 =====
+include brightness, blur , noise, and low-light corruptions as first-class augmentations rather than optional
+extras. 
+Simple and Scalable Predictive Uncertainty Estimation using Deep Ensembles  and Dropout as a
+Bayesian Approximation  — Balaji Lakshminarayanan et al., 2016; Yarin Gal and Zoubin Ghahramani, 2015,
+arXiv. These papers are key for uncertainty-aware prediction. In your project, they are relevant to both 
+detector confidence  and value-head calibration : a planner should not chase a diamond hypothesis or
+high terminal value with the same aggression when the model is uncertain. 
+Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World
+and CAD2RL  — Josh Tobin et al., 2017; Fereshteh Sadeghi and Sergey Levine, 2016, arXiv. These are
+foundational sim-to-real papers arguing that sufficiently varied simulation can produce robustness to
+appearance shift. Even though you are staying in simulation, the exact same logic applies to daytime/
+nighttime randomization , color jitter , texture shift, and camera-noise augmentation in Malmo. 
+RobustNav: Towards Benchmarking Robustness in Embodied Navigation  — Prithvijit Chattopadhyay,
+Judy Hoffman, Roozbeh Mottaghi, Aniruddha Kembhavi, 2021, ICCV, official repo available. RobustNav is the
+most directly relevant robustness benchmark for your navigation problem because it explicitly studies how
+visual corruptions and dynamics corruptions affect embodied navigation performance. Its strongest
+relevance to your Malmo setup is methodological: treat day/night, blur , camera-like artifacts, and actuation
+noise as evaluation axes , not as anecdotal edge cases. 
+Official code and repos worth cloning first
+If you want codebases that are closest to your project’s needs, the most useful official repositories are
+PlaNet, Dreamer , DreamerV2, DreamerV3, TD-MPC, TD-MPC2, Active Neural SLAM, Goal-Oriented Semantic
+Exploration, Habitat-Lab, Habitat-Sim, Grounding DINO, DETR, DrQ-v2, Zero-DCE, CARLA, Gibson, and
+Microsoft Malmo. These are useful not only as baselines but also as design references for logging, metrics,
+map representations, and robustness protocols. 
+Must-read sequence
+Paper Year Venue One-line relevance
+World Models 2018 NeurIPSCanonical decomposition of visual
+encoder , recurrent dynamics, and
+simple controller from pixels. 
+Learning Latent
+Dynamics for Planning
+from Pixels2019 ICMLThe clearest precedent for latent-
+space planning with online
+replanning. 
+Dream to Control 2019 arXivShows how value learning can
+happen inside imagined latent
+rollouts. 30
+31
+32
+33
+34
+35
+13
+14
+6
+===== PAGE 7 =====
+Paper Year Venue One-line relevance
+Temporal Difference
+Learning for Model
+Predictive Control2022 arXivShort-horizon latent MPC plus
+terminal value head; closest to your
+current planning setup. 
+Occupancy Grids foundationalfoundational /
+retrospective arXivBest conceptual basis for belief
+maps, multi-view integration, and
+stale-hypothesis handling. 
+Learning to Explore
+using Active Neural
+SLAM2020 ICLRStrong modular template for
+learned mapping plus analytic
+planning. 
+Object Goal Navigation
+using Goal-Oriented
+Semantic Exploration2020 NeurIPSBest object-navigation reference for
+detector + map + planner
+integration. 
+RobustNav 2021 ICCVBest robustness benchmark
+reference for corrupted-input
+embodied navigation. 
+A good reading order is:
+World Models . Learn the high-level decomposition and vocabulary. The key takeaway is that
+compact control can ride on top of richer learned latent models. 
+PlaNet . Read this next because it is the best direct model for your current controller . Pay attention to
+latent recurrent state, online replanning, and why pixel reconstruction alone is not enough. 
+TD-MPC . This is where your current “rollout + terminal score” idea becomes explicit and modern. The
+main takeaway is that short-horizon search becomes much stronger when paired with a learned
+terminal value. 
+Dreamer . Read it after PlaNet and TD-MPC to understand what changes when the planner becomes
+a learned actor trained in imagination. The takeaway is not that you must adopt Dreamer now, but
+that imagination can be used for learning , not only planning. 
+Occupancy Grids . This is foundational for the detector side of your problem. The key takeaway is
+that uncertain observations should accumulate into a belief map instead of causing immediate hard
+commitments. 
+Active Neural SLAM . Read this to see how explicit maps and planners remain powerful even in
+learned systems. The main takeaway is that modularity is not a weakness; it is often the practical
+winning design. 
+Goal-Oriented Semantic Exploration . This paper shows how object-goal navigation benefits when
+detection, semantic memory, and planning are tied together . The takeaway for you is that object36
+19
+37
+23
+38
+1. 
+35
+2. 
+13
+3. 
+36
+4. 
+14
+5. 
+19
+6. 
+37
+7. 
+7
+===== PAGE 8 =====
+evidence should update map beliefs and exploration priorities, not just trigger immediate pursuit. 
+RobustNav . End with this to redesign your evaluation. The key takeaway is that corrupted-input
+robustness must be measured explicitly and often dominates real closed-loop performance. 
+Supplementary reading after those eight should be PETS  for uncertainty-aware planning, Grounding DINO
+or DETR  for learned detection, and AugMix/Zero-DCE  for nighttime robustness. 
+Methods most worth trying next
+The lowest-cost, highest-return  step is to harden the current HSV+blob detector before changing the
+world model. Add edge rejection  so detections whose centroids lie within a margin of the image border are
+ignored or heavily down-weighted; edge artifacts are a classic source of false positives, and your own
+observations about edge blobs point directly to this. Add temporal confirmation  so a new diamond
+hypothesis must persist for  or  consecutive frames before entering the planner , and add a stale-
+hypothesis timeout  so a target belief is cleared if it is not re-observed within  steps after a turn-back or
+verification action. These are simple forms of probabilistic belief maintenance and tracking, aligned with
+occupancy-grid reasoning and modern tracking-by-detection practice. 
+The next cheap improvement is multi-view confirmation . When a first detection appears, do not
+immediately commit the planner . Instead run a short verification macro such as left–center–right  or right–
+center–left , and accept the object only if the bearing change is self-consistent for a static target. This idea is
+strongly supported by probabilistic mapping and semantic-navigation systems: world evidence should get
+stronger when multiple views agree, not when one crop happens to look “diamond-like.” If confirmation
+fails, delete the hypothesis instead of letting the value head keep pulling MPC toward it. 
+For the night failure specifically, test two perception fixes in parallel . The first is classical: adjust HSV
+ranges or insert a tiny enhancement stage such as gamma correction or Zero-DCE before thresholding. The
+second is learned: collect a small labeled day/night crop dataset and train a lightweight classifier to re-score
+candidate blobs, using augmentation inspired by AugMix, ImageNet-C-style corruptions, and domain-
+randomization logic. If the enhancement route helps but the learned route helps more, that tells you the
+failure was not just brightness but a broader appearance-shift problem. 
+If you move beyond HSV+blob, the most practical learned detector path  is not necessarily full open-
+vocabulary grounding. For a single fixed category like diamond, a small detector or crop classifier may be
+enough. Still, DETR is useful as a clean end-to-end detector reference, and Grounding DINO becomes
+attractive if you foresee future object-goal variations or language-conditioned tasks. In either case, 
+confidence calibration matters : deep ensembles or MC-dropout are straightforward ways to estimate
+prediction uncertainty, and the planner can then multiply terminal value by confidence or reject low-
+confidence detections entirely. 
+On the planning side, the most meaningful upgrade is not “more brute force” first; it is better scoring . Use
+a terminal score of the form23
+8. 
+38
+39
+K=2 3
+N
+40
+41
+42
+43
+8
+===== PAGE 9 =====
+where  is the learned terminal value and  is a map-grounded goal-belief bonus rather than a single-
+frame detector bonus. This makes your planner more like TD-MPC and GOSE: the value head estimates
+future desirability, while the map contributes target-belief structure. If  is trained jointly or at least
+calibrated against actual success-to-go, it becomes a real terminal heuristic instead of a fragile learned
+preference. 
+If you choose one architectural shift, the best upgrade is likely from a plain deterministic AE+dynamics
+pair to a recurrent task-oriented latent model . PlaNet is the best direct replacement if you want to keep
+explicit MPC. Dreamer is the better reference if you want to learn a policy in imagination. TD-MPC is the
+better reference if you want a compact latent planner with a strong terminal value and less emphasis on
+pixel reconstruction. In thesis terms, a very defensible progression is: current modular system → robust
+detector and belief map → PlaNet/TD-MPC-style latent state → optional Dreamer-style learning later . 
+Recommended evaluation experiments for env3
+The literature on embodied evaluation strongly suggests that you should shift from purely offline image-
+prediction metrics to closed-loop navigation metrics . For env3, because the grid is only 11×11  and the
+action set is small, you can compute exact orientation-aware shortest paths  in the ground-truth grid for
+evaluation only. That means you can report Success Rate , SPL, and steps-to-success  exactly, rather than
+approximately. 
+Exact metrics to log
+Use the following metrics for every evaluation condition:
+Success Rate (SR) : fraction of episodes in which the agent reaches the goal region within 
+steps. Define the goal region using ground-truth evaluator-only information, for example “agent
+reaches the diamond cell or a 1-cell neighborhood,” depending on your mission design. 
+SPL: success weighted by shortest path length, using the exact shortest number of action steps  in
+the state space . Because turning costs are real in your action space, do not use
+Euclidean distance alone. 
+Steps to success : actual executed actions until success, averaged over successful episodes.
+Collision rate : fraction of actions that result in collision or blocked motion.
+False Positive Commitment Rate (FPCR) : number of times per episode the planner commits to a
+goal hypothesis that is later invalidated by temporal or multi-view verification.
+Time to first valid detection : steps until the first detector hypothesis that later survives
+confirmation.
+Detector precision/recall/F1 : on a held-out frame dataset, ideally at least 500 day + 500 night
+frames from env3, with positives and hard negatives such as edge artifacts oversampled.
+Night robustness gap : SR and SPL between day and night.
+Fixed-start generalization gap : difference between fixed-start and multi-start SR/SPL.
+Offline model quality : keep reconstruction loss and latent rollout error , but report them separately
+from closed-loop performance. J(a)= t:t+H−1 r +
+k=1∑H
+kfree/obstacleλV(z)+ v t+H λG(m) g t+H
+V G
+V
+44
+45
+24
+• Tmax
+24
+• 
+(x,z,heading)
+24
+• 
+• 
+• 
+• 
+• 
+• Δ Δ
+• 
+• 
+46
+9
+===== PAGE 10 =====
+Recommended evaluation protocol
+For each condition below, the strongest design is all valid start cells × all 4 headings  in env3, because the
+grid is small enough to make exhaustive evaluation realistic. If that is too expensive, use at least 50
+episodes per condition , stratified across near/far starts and all headings, with 3 random seeds  for training
+and evaluation. Day and night should be evaluated separately, not mixed. 
+Experiment Purpose Metric Expected outcome
+Fixed-start daytime
+baselineReplicate the condition
+where current behavior
+seems strongestSR, SPL,
+stepsHigh relative performance but
+optimistic due to memorized
+geometry/start bias. 
+Multi-start daytimeTest real generalization
+beyond one spawn
+configurationSR, SPL,
+FPCRLikely lower than fixed-start;
+reveals whether success came
+from path prior rather than
+robust grounding. 
+Multi-start nightMeasure robustness
+under illumination shiftSR, SPL,
+detector F1,
+night gapLikely sharp drop with current
+HSV+blob; quantifies the night
+failure you observed. 
+Value term ablationDetermine whether the
+value head helps beyond
+short-horizon rollout
+rewardSR, SPL,
+stepsIf calibrated, value should help
+on longer-range starts; if not, it
+may amplify false commitments. 
+Detector hardening
+ablationCompare raw HSV+blob
+vs +edge rejection/
++temporal confirmation/
++stale timeoutFPCR,
+detector F1,
+SRFalse positives should fall
+substantially; SR should improve
+most at night and near edges. 
+Learned blob re-
+scorerTest whether a
+lightweight learned
+detector improves over
+handcrafted heuristicsDetector F1,
+SR, night gapModerate increase in day SR,
+larger increase in night SR if
+labeled data are balanced. 
+Low-light
+preprocessingTest gamma/Zero-DCE
+before detectionDetector F1,
+night SRIf illumination is the main issue,
+this should materially close the
+day/night gap. 
+Horizon ablationCheck whether more
+search is worth the costSR, SPL,
+compute per
+stepH=4 may already be near the
+sweet spot; larger H helps only if
+terminal scoring and detector
+grounding are trustworthy. 
+Oracle goal upper
+boundReplace detector with
+evaluator-only true goal
+bearing/position during
+scoringSR, SPLSeparates planning/model limits
+from perception limits; likely
+shows the current bottleneck is
+perception. 46
+24
+47
+48
+49
+50
+51
+29
+52
+53
+10
+===== PAGE 11 =====
+Experiment Purpose Metric Expected outcome
+Fixed-start vs multi-
+start with and
+without mapTest whether occupancy
+memory actually helpsSR, SPL,
+repeated-FP
+countMap should help most when the
+first view is ambiguous or after a
+lost hypothesis. 
+For the report, the most persuasive ablation trio is: with/without value term , with/without detector
+hardening , and fixed-start vs multi-start, each in day and night . Those three slices neatly answer the
+main scientific questions: is your planner actually helping, is the detector the failure point, and does the
+method generalize beyond one spawn configuration? 
+Datasets and tools to study
+Project Malmo  remains the right environment for your immediate experiments because it is built directly
+on Minecraft and already matches your mission setup. Its official repository is useful not only for
+environment access but also for instrumenting evaluator-only logs needed for your new metrics. 
+Habitat-Lab  and Habitat-Sim  are the best tools to study for methodology. Habitat-Lab provides the task/
+evaluation framework, while Habitat-Sim provides the high-performance simulator and common 3D
+datasets. Even if you do not port your project, their codebases and metric conventions are excellent
+references for reproducible navigation experiments. 
+Gibson Env  is useful if you want a bridge toward more realistic indoor navigation and sim-to-real thinking.
+It is built from real spaces and explicitly emphasizes transfer , which makes it a strong conceptual reference
+for your report’s broader relevance section. 
+CARLA  is less directly relevant to your 11×11 Minecraft world, but it is still worth studying if you want
+examples of how the community treats environmental variation, weather , and sensor conditions as explicit
+benchmark axes. That mindset is directly applicable to day/night Malmo evaluations. 
+For robustness and visual grounding, the most useful external resources are RobustNav  for nav
+corruptions, Zero-DCE  for a practical low-light preprocessor , and if you later train a learned detector ,
+standard detection repos such as DETR  and Grounding DINO . 
+Open questions and limitations
+The main unresolved question is how much of your current closed-loop behavior is driven by true goal
+grounding  versus geometric bias from a small map and limited start distribution . The recommended
+oracle-goal and multi-start experiments are designed specifically to answer that. 
+A second open question is whether your current latent state is actually limiting control. The literature
+strongly suggests that task-oriented recurrent latents outperform plain reconstruction-oriented latents for
+acting, but until you run the detector/perception ablations, it would be premature to blame the world
+model first. In a system currently failing at night and on false blobs, perception robustness may still be the
+dominant issue. 54
+46
+55
+25
+56
+57
+58
+24
+59
+11
+===== PAGE 12 =====
+A final limitation of this report is that some older foundational references are easier to retrieve through
+project pages, repositories, or retrospective versions than through the original publisher pages, so a few
+citations point to official repos/project materials or arXiv abstracts instead of final proceedings pages. The
+overall technical content, however , is well anchored in primary papers and official code repositories.
+https://github.com/danijar/planet
+https://github.com/danijar/planet
+https://arxiv.org/abs/2106.04531
+https://arxiv.org/abs/2106.04531
+https://arxiv.org/abs/1304.1098
+https://arxiv.org/abs/1304.1098
+https://arxiv.org/abs/1312.6114
+https://arxiv.org/abs/1312.6114
+https://arxiv.org/abs/2004.04136
+https://arxiv.org/abs/2004.04136
+https://arxiv.org/abs/2004.13649
+https://arxiv.org/abs/2004.13649
+https://arxiv.org/abs/1907.00953
+https://arxiv.org/abs/1907.00953
+https://arxiv.org/abs/1803.10122
+https://arxiv.org/abs/1803.10122
+https://arxiv.org/abs/1912.01603
+https://arxiv.org/abs/1912.01603
+https://arxiv.org/abs/2010.02193
+https://arxiv.org/abs/2010.02193
+https://arxiv.org/abs/1805.12114
+https://arxiv.org/abs/1805.12114
+https://arxiv.org/abs/2203.04955
+https://arxiv.org/abs/2203.04955
+https://arxiv.org/abs/2006.16712
+https://arxiv.org/abs/2006.16712
+https://arxiv.org/abs/1602.02867
+https://arxiv.org/abs/1602.02867
+https://arxiv.org/abs/1702.08360
+https://arxiv.org/abs/1702.08360
+https://arxiv.org/abs/2004.05155
+https://arxiv.org/abs/2004.05155
+https://arxiv.org/abs/2007.00643
+https://arxiv.org/abs/2007.006431 4 5 6 713 34 45 52 59
+233
+319 40 41 50 54
+8
+9
+10
+11
+12
+14
+15
+16 39
+17
+18
+20
+21
+22
+23
+12
+===== PAGE 13 =====
+https://arxiv.org/abs/1807.06757
+https://arxiv.org/abs/1807.06757
+https://arxiv.org/abs/1904.01201
+https://arxiv.org/abs/1904.01201
+https://arxiv.org/abs/2005.12872
+https://arxiv.org/abs/2005.12872
+https://arxiv.org/abs/2303.05499
+https://arxiv.org/abs/2303.05499
+https://arxiv.org/abs/1805.01934
+https://arxiv.org/abs/1805.01934
+https://arxiv.org/abs/2001.06826
+https://arxiv.org/abs/2001.06826
+https://arxiv.org/abs/1903.12261
+https://arxiv.org/abs/1903.12261
+https://arxiv.org/abs/1612.01474
+https://arxiv.org/abs/1612.01474
+https://arxiv.org/abs/1703.06907
+https://arxiv.org/abs/1703.06907
+https://worldmodels.github.io/
+https://worldmodels.github.io/
+https://github.com/nicklashansen/tdmpc
+https://github.com/nicklashansen/tdmpc
+https://github.com/devendrachaplot/Neural-SLAM
+https://github.com/devendrachaplot/Neural-SLAM
+https://github.com/allenai/robustnav
+https://github.com/allenai/robustnav
+https://github.com/facebookresearch/detr
+https://github.com/facebookresearch/detr
+https://github.com/microsoft/malmo
+https://github.com/microsoft/malmo
+https://arxiv.org/abs/1808.10654
+https://arxiv.org/abs/1808.10654
+https://arxiv.org/abs/1711.03938
+https://arxiv.org/abs/1711.0393824 46 47 53
+25
+26
+27
+28 48
+29 42
+30
+31
+32
+35
+36 44 49
+37
+38 58
+43 51
+55
+56
+57
+13
