@@ -1,0 +1,330 @@
+{
+  "env3|map-only|0.0": [
+    {
+      "success": false,
+      "steps": 99,
+      "path_length": 50.0,
+      "spawn": [
+        -1.5,
+        0.5,
+        270
+      ],
+      "spawn_dist": 10.0,
+      "final_pos": [
+        -1.5,
+        2.5
+      ],
+      "dist_to_diamond": 8.0
+    },
+    {
+      "success": true,
+      "steps": 102,
+      "path_length": 56.0,
+      "spawn": [
+        1.5,
+        -3.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": true,
+      "steps": 98,
+      "path_length": 54.0,
+      "spawn": [
+        3.5,
+        4.5,
+        270
+      ],
+      "spawn_dist": 1.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": true,
+      "steps": 84,
+      "path_length": 48.0,
+      "spawn": [
+        -0.5,
+        -3.5,
+        0
+      ],
+      "spawn_dist": 13.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": true,
+      "steps": 90,
+      "path_length": 50.0,
+      "spawn": [
+        -2.5,
+        2.5,
+        180
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0
+    }
+  ],
+  "env3|map-only|0.1": [
+    {
+      "success": true,
+      "steps": 88,
+      "path_length": 24.0,
+      "spawn": [
+        2.5,
+        -0.5,
+        270
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": false,
+      "steps": 107,
+      "path_length": 25.0,
+      "spawn": [
+        0.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 10.0,
+      "final_pos": [
+        -2.5,
+        4.5
+      ],
+      "dist_to_diamond": 7.0
+    },
+    {
+      "success": true,
+      "steps": 105,
+      "path_length": 26.0,
+      "spawn": [
+        1.5,
+        -3.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 40.0,
+      "spawn": [
+        -3.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 14.0,
+      "final_pos": [
+        -2.5,
+        1.5
+      ],
+      "dist_to_diamond": 10.0
+    },
+    {
+      "success": false,
+      "steps": 110,
+      "path_length": 27.0,
+      "spawn": [
+        2.5,
+        -2.5,
+        270
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        -3.5,
+        0.5
+      ],
+      "dist_to_diamond": 12.0
+    }
+  ],
+  "env3|value-MPC|0.0": [
+    {
+      "success": true,
+      "steps": 84,
+      "path_length": 47.0,
+      "spawn": [
+        2.5,
+        2.5,
+        90
+      ],
+      "spawn_dist": 4.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": true,
+      "steps": 90,
+      "path_length": 50.0,
+      "spawn": [
+        -2.5,
+        2.5,
+        0
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": true,
+      "steps": 83,
+      "path_length": 46.0,
+      "spawn": [
+        1.5,
+        0.5,
+        0
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": true,
+      "steps": 78,
+      "path_length": 43.0,
+      "spawn": [
+        -0.5,
+        1.5,
+        180
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0
+    },
+    {
+      "success": true,
+      "steps": 85,
+      "path_length": 46.0,
+      "spawn": [
+        1.5,
+        2.5,
+        270
+      ],
+      "spawn_dist": 5.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0
+    }
+  ],
+  "env3|value-MPC|0.1": [
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 22.0,
+      "spawn": [
+        3.5,
+        4.5,
+        270
+      ],
+      "spawn_dist": 1.0,
+      "final_pos": [
+        -1.5,
+        -2.5
+      ],
+      "dist_to_diamond": 13.0
+    },
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 32.0,
+      "spawn": [
+        -3.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 14.0,
+      "final_pos": [
+        -3.5,
+        2.5
+      ],
+      "dist_to_diamond": 10.0
+    },
+    {
+      "success": false,
+      "steps": 95,
+      "path_length": 45.0,
+      "spawn": [
+        2.5,
+        4.5,
+        270
+      ],
+      "spawn_dist": 2.0,
+      "final_pos": [
+        2.5,
+        -0.5
+      ],
+      "dist_to_diamond": 7.0
+    },
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 27.0,
+      "spawn": [
+        4.5,
+        -0.5,
+        0
+      ],
+      "spawn_dist": 5.0,
+      "final_pos": [
+        -2.5,
+        -0.5
+      ],
+      "dist_to_diamond": 12.0
+    },
+    {
+      "success": false,
+      "steps": 111,
+      "path_length": 26.0,
+      "spawn": [
+        -1.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 14.0,
+      "final_pos": [
+        4.5,
+        -1.5
+      ],
+      "dist_to_diamond": 6.0
+    }
+  ]
+}
