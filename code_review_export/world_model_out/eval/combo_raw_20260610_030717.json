@@ -1,0 +1,1388 @@
+{
+  "env4|p2b_vc WV50": [
+    {
+      "success": false,
+      "steps": 94,
+      "path_length": 52.0,
+      "spawn": [
+        -2.5,
+        -2.5,
+        270
+      ],
+      "spawn_dist": 14.0,
+      "final_pos": [
+        2.5,
+        -1.5
+      ],
+      "dist_to_diamond": 8.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 94,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 79,
+      "path_length": 44.0,
+      "spawn": [
+        -3.5,
+        1.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 74,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 110,
+      "path_length": 61.0,
+      "spawn": [
+        4.5,
+        2.5,
+        90
+      ],
+      "spawn_dist": 2.0,
+      "final_pos": [
+        0.5,
+        3.5
+      ],
+      "dist_to_diamond": 5.0,
+      "step_kinds": {
+        "diamond": 2,
+        "frontier": 107,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1
+      }
+    },
+    {
+      "success": true,
+      "steps": 74,
+      "path_length": 43.0,
+      "spawn": [
+        -3.5,
+        0.5,
+        0
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 69,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 66,
+      "path_length": 34.0,
+      "spawn": [
+        -2.5,
+        -3.5,
+        180
+      ],
+      "spawn_dist": 15.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 61,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 96,
+      "path_length": 55.0,
+      "spawn": [
+        -3.5,
+        2.5,
+        0
+      ],
+      "spawn_dist": 10.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 3,
+        "frontier": 93,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 110,
+      "path_length": 61.0,
+      "spawn": [
+        -1.5,
+        -0.5,
+        180
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        0.5
+      ],
+      "dist_to_diamond": 4.0,
+      "step_kinds": {
+        "diamond": 2,
+        "frontier": 108,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 56.0,
+      "spawn": [
+        4.5,
+        3.5,
+        180
+      ],
+      "spawn_dist": 1.0,
+      "final_pos": [
+        4.5,
+        -2.5
+      ],
+      "dist_to_diamond": 7.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 109,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 56.0,
+      "spawn": [
+        -2.5,
+        -0.5,
+        270
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        0.5,
+        -3.5
+      ],
+      "dist_to_diamond": 12.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 108,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1
+      }
+    },
+    {
+      "success": true,
+      "steps": 56,
+      "path_length": 30.0,
+      "spawn": [
+        4.5,
+        -2.5,
+        180
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 51,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1
+      }
+    },
+    {
+      "success": true,
+      "steps": 83,
+      "path_length": 46.0,
+      "spawn": [
+        -1.5,
+        1.5,
+        270
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 78,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 108,
+      "path_length": 55.0,
+      "spawn": [
+        3.5,
+        3.5,
+        0
+      ],
+      "spawn_dist": 2.0,
+      "final_pos": [
+        4.5,
+        -2.5
+      ],
+      "dist_to_diamond": 7.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 108,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 105,
+      "path_length": 57.0,
+      "spawn": [
+        3.5,
+        2.5,
+        0
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        -3.5,
+        2.5
+      ],
+      "dist_to_diamond": 10.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 104,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1
+      }
+    },
+    {
+      "success": true,
+      "steps": 57,
+      "path_length": 32.0,
+      "spawn": [
+        3.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 51,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1
+      }
+    },
+    {
+      "success": false,
+      "steps": 107,
+      "path_length": 58.0,
+      "spawn": [
+        1.5,
+        1.5,
+        270
+      ],
+      "spawn_dist": 6.0,
+      "final_pos": [
+        0.5,
+        4.5
+      ],
+      "dist_to_diamond": 4.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 102,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1
+      }
+    },
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 59.0,
+      "spawn": [
+        0.5,
+        0.5,
+        90
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        -0.5,
+        4.5
+      ],
+      "dist_to_diamond": 5.0,
+      "step_kinds": {
+        "diamond": 1,
+        "frontier": 107,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1
+      }
+    },
+    {
+      "success": true,
+      "steps": 82,
+      "path_length": 46.0,
+      "spawn": [
+        -2.5,
+        2.5,
+        180
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 77,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 66,
+      "path_length": 34.0,
+      "spawn": [
+        -2.5,
+        -3.5,
+        180
+      ],
+      "spawn_dist": 15.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 61,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 59.0,
+      "spawn": [
+        3.5,
+        2.5,
+        270
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        -1.5,
+        2.5
+      ],
+      "dist_to_diamond": 8.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 108,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1
+      }
+    },
+    {
+      "success": true,
+      "steps": 67,
+      "path_length": 36.0,
+      "spawn": [
+        -0.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 13.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 62,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    }
+  ],
+  "env5|p2b_vc WV50": [
+    {
+      "success": true,
+      "steps": 65,
+      "path_length": 43.0,
+      "spawn": [
+        1.5,
+        1.5,
+        0
+      ],
+      "spawn_dist": 6.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 61,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 82,
+      "path_length": 48.0,
+      "spawn": [
+        3.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 78,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 72,
+      "path_length": 43.0,
+      "spawn": [
+        1.5,
+        -0.5,
+        180
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 68,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 69,
+      "path_length": 40.0,
+      "spawn": [
+        4.5,
+        -0.5,
+        270
+      ],
+      "spawn_dist": 5.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 3,
+        "frontier": 66,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 80,
+      "path_length": 46.0,
+      "spawn": [
+        2.5,
+        -0.5,
+        0
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 76,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 75,
+      "path_length": 48.0,
+      "spawn": [
+        2.5,
+        3.5,
+        0
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 71,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 109,
+      "path_length": 62.0,
+      "spawn": [
+        -2.5,
+        2.5,
+        0
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        1.5,
+        4.5
+      ],
+      "dist_to_diamond": 3.0,
+      "step_kinds": {
+        "diamond": 3,
+        "frontier": 106,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 108,
+      "path_length": 63.0,
+      "spawn": [
+        0.5,
+        -2.5,
+        270
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        2.5,
+        4.5
+      ],
+      "dist_to_diamond": 2.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 104,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 77,
+      "path_length": 50.0,
+      "spawn": [
+        4.5,
+        3.5,
+        0
+      ],
+      "spawn_dist": 1.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 73,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 80,
+      "path_length": 46.0,
+      "spawn": [
+        1.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 76,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 71,
+      "path_length": 44.0,
+      "spawn": [
+        -0.5,
+        2.5,
+        90
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 67,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 79,
+      "path_length": 47.0,
+      "spawn": [
+        4.5,
+        0.5,
+        180
+      ],
+      "spawn_dist": 4.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 75,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 81,
+      "path_length": 49.0,
+      "spawn": [
+        3.5,
+        -2.5,
+        90
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 77,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 57,
+      "path_length": 37.0,
+      "spawn": [
+        -3.5,
+        0.5,
+        180
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 53,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 65,
+      "path_length": 43.0,
+      "spawn": [
+        1.5,
+        1.5,
+        180
+      ],
+      "spawn_dist": 6.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 61,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 88,
+      "path_length": 52.0,
+      "spawn": [
+        -0.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 84,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 58,
+      "path_length": 37.0,
+      "spawn": [
+        -3.5,
+        0.5,
+        90
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 54,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 110,
+      "path_length": 62.0,
+      "spawn": [
+        1.5,
+        -1.5,
+        0
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        -2.5,
+        4.5
+      ],
+      "dist_to_diamond": 7.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 110,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 75,
+      "path_length": 47.0,
+      "spawn": [
+        1.5,
+        3.5,
+        270
+      ],
+      "spawn_dist": 4.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 71,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 68,
+      "path_length": 40.0,
+      "spawn": [
+        4.5,
+        -0.5,
+        180
+      ],
+      "spawn_dist": 5.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 3,
+        "frontier": 65,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    }
+  ],
+  "env6|p2b_vc WV50": [
+    {
+      "success": true,
+      "steps": 56,
+      "path_length": 34.0,
+      "spawn": [
+        4.5,
+        1.5,
+        180
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 46,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 11,
+      "path_length": 6.0,
+      "spawn": [
+        -2.5,
+        4.5,
+        180
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 6,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 63,
+      "path_length": 37.0,
+      "spawn": [
+        3.5,
+        3.5,
+        90
+      ],
+      "spawn_dist": 2.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 53,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 62,
+      "path_length": 36.0,
+      "spawn": [
+        2.5,
+        3.5,
+        90
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 52,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 35,
+      "path_length": 21.0,
+      "spawn": [
+        -1.5,
+        -1.5,
+        0
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 25,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 61,
+      "path_length": 36.0,
+      "spawn": [
+        3.5,
+        2.5,
+        90
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 9,
+        "frontier": 52,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 35,
+      "path_length": 22.0,
+      "spawn": [
+        -0.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 25,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 101,
+      "path_length": 63.0,
+      "spawn": [
+        3.5,
+        -0.5,
+        90
+      ],
+      "spawn_dist": 6.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 97,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 41,
+      "path_length": 24.0,
+      "spawn": [
+        -3.5,
+        -0.5,
+        0
+      ],
+      "spawn_dist": 13.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 31,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 54,
+      "path_length": 32.0,
+      "spawn": [
+        2.5,
+        1.5,
+        0
+      ],
+      "spawn_dist": 5.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 44,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 12,
+      "path_length": 6.0,
+      "spawn": [
+        -2.5,
+        4.5,
+        270
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 7,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 52,
+      "path_length": 34.0,
+      "spawn": [
+        -1.5,
+        -0.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 47,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 63,
+      "path_length": 36.0,
+      "spawn": [
+        -3.5,
+        3.5,
+        180
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 53,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 42,
+      "path_length": 25.0,
+      "spawn": [
+        1.5,
+        -0.5,
+        180
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 32,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 44,
+      "path_length": 26.0,
+      "spawn": [
+        -2.5,
+        0.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 34,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": false,
+      "steps": 108,
+      "path_length": 65.0,
+      "spawn": [
+        0.5,
+        -2.5,
+        180
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        2.5
+      ],
+      "dist_to_diamond": 2.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 104,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 30,
+      "path_length": 18.0,
+      "spawn": [
+        -3.5,
+        -2.5,
+        180
+      ],
+      "spawn_dist": 15.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 20,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 35,
+      "path_length": 21.0,
+      "spawn": [
+        -1.5,
+        -3.5,
+        180
+      ],
+      "spawn_dist": 14.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 25,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 62,
+      "path_length": 36.0,
+      "spawn": [
+        2.5,
+        3.5,
+        90
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 52,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    },
+    {
+      "success": true,
+      "steps": 37,
+      "path_length": 22.0,
+      "spawn": [
+        -0.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 13.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 10,
+        "frontier": 27,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0
+      }
+    }
+  ]
+}

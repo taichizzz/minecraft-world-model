@@ -1,0 +1,4452 @@
+{
+  "env4|p2b_vc WV50": [
+    {
+      "success": true,
+      "steps": 74,
+      "path_length": 35.0,
+      "spawn": [
+        -2.5,
+        -2.5,
+        270
+      ],
+      "spawn_dist": 14.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 50,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 7,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          64,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          70,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          71,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          72,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          73,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 110,
+      "path_length": 56.0,
+      "spawn": [
+        -3.5,
+        1.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 74,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 18,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          73,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          78,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          79,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          85,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          104,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          106,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          107,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          108,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          109,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 5,
+      "path_length": 1.0,
+      "spawn": [
+        4.5,
+        2.5,
+        90
+      ],
+      "spawn_dist": 2.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 3
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          4,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": false,
+      "steps": 105,
+      "path_length": 53.0,
+      "spawn": [
+        -3.5,
+        0.5,
+        0
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        4.5,
+        1.5
+      ],
+      "dist_to_diamond": 3.0,
+      "step_kinds": {
+        "diamond": 3,
+        "frontier": 70,
+        "no_target": 0,
+        "stuck_override": 1,
+        "spin_break": 1,
+        "hint": 18,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          70,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          75,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          76,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          82,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          101,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          103,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          104,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          105,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 101,
+      "path_length": 46.0,
+      "spawn": [
+        -2.5,
+        -3.5,
+        180
+      ],
+      "spawn_dist": 15.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 70,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 13,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          66,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          67,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          73,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          95,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          97,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          98,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          99,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          100,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 18,
+      "path_length": 9.0,
+      "spawn": [
+        -3.5,
+        2.5,
+        0
+      ],
+      "spawn_dist": 10.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 3,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 7,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          8,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          14,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          15,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          16,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          17,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 60,
+      "path_length": 30.0,
+      "spawn": [
+        -1.5,
+        -0.5,
+        180
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 41,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 7,
+        "sweep": 8
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          50,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          56,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          57,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          58,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          59,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 30,
+      "path_length": 14.0,
+      "spawn": [
+        4.5,
+        3.5,
+        180
+      ],
+      "spawn_dist": 1.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 19,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          24,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          26,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          27,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          28,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          29,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 70,
+      "path_length": 31.0,
+      "spawn": [
+        -2.5,
+        -0.5,
+        270
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 45,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 2,
+        "hint": 7,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          60,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          66,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          67,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          68,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          69,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 9,
+      "path_length": 6.0,
+      "spawn": [
+        4.5,
+        -2.5,
+        180
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 2
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          3,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          5,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          6,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          7,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          8,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 98,
+      "path_length": 46.0,
+      "spawn": [
+        -1.5,
+        1.5,
+        270
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 67,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 18,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          37
+        ],
+        [
+          "sweep",
+          62
+        ],
+        [
+          "hint",
+          77,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          82,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          83,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          89,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          97,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 25,
+      "path_length": 13.0,
+      "spawn": [
+        3.5,
+        3.5,
+        0
+      ],
+      "spawn_dist": 2.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 18,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 0
+      },
+      "goal_events": [
+        [
+          "hint",
+          19,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          21,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          22,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          23,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          24,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 67,
+      "path_length": 36.0,
+      "spawn": [
+        3.5,
+        2.5,
+        0
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 47,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 14,
+        "sweep": 5
+      },
+      "goal_events": [
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          52,
+          [
+            8,
+            7
+          ]
+        ],
+        [
+          "hint",
+          62,
+          [
+            9,
+            8
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 13,
+      "path_length": 6.0,
+      "spawn": [
+        3.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 3
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          4,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          6,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          10,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          11,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          12,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 81,
+      "path_length": 39.0,
+      "spawn": [
+        1.5,
+        1.5,
+        270
+      ],
+      "spawn_dist": 6.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 61,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 2,
+        "hint": 1,
+        "sweep": 13
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "sweep",
+          76
+        ],
+        [
+          "hint",
+          77,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          78,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          79,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          80,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 94,
+      "path_length": 47.0,
+      "spawn": [
+        0.5,
+        0.5,
+        90
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 59,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 18,
+        "sweep": 11
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          54,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          59,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          60,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          66,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          88,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          90,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          91,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          92,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          93,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": false,
+      "steps": 108,
+      "path_length": 53.0,
+      "spawn": [
+        -2.5,
+        2.5,
+        180
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        4.5,
+        -1.5
+      ],
+      "dist_to_diamond": 6.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 77,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 18,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          76,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          81,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          82,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          88,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          107,
+          [
+            9,
+            8
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 101,
+      "path_length": 46.0,
+      "spawn": [
+        -2.5,
+        -3.5,
+        180
+      ],
+      "spawn_dist": 15.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 70,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 13,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          66,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          67,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          73,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          95,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          97,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          98,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          99,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          100,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 72,
+      "path_length": 36.0,
+      "spawn": [
+        3.5,
+        2.5,
+        270
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 0,
+        "frontier": 47,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 2,
+        "hint": 14,
+        "sweep": 9
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          31
+        ],
+        [
+          "sweep",
+          56
+        ],
+        [
+          "hint",
+          57,
+          [
+            8,
+            7
+          ]
+        ],
+        [
+          "hint",
+          67,
+          [
+            9,
+            8
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 101,
+      "path_length": 52.0,
+      "spawn": [
+        -0.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 13.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 67,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 2,
+        "hint": 17,
+        "sweep": 10
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          53,
+          [
+            8,
+            7
+          ]
+        ],
+        [
+          "hint",
+          64,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "hint",
+          95,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          97,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          98,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          99,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          100,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    }
+  ],
+  "env5|p2b_vc WV50": [
+    {
+      "success": true,
+      "steps": 79,
+      "path_length": 43.0,
+      "spawn": [
+        1.5,
+        1.5,
+        0
+      ],
+      "spawn_dist": 6.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 55,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 3,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          69,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          72,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          73,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          74,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          78,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 34,
+      "path_length": 22.0,
+      "spawn": [
+        3.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 20,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 3,
+        "sweep": 6
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          28,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          31,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          32,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          33,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 54,
+      "path_length": 27.0,
+      "spawn": [
+        1.5,
+        -0.5,
+        180
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 35,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 3,
+        "sweep": 8
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          44,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          47,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          48,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          49,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          53,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 6,
+      "path_length": 4.0,
+      "spawn": [
+        4.5,
+        -0.5,
+        270
+      ],
+      "spawn_dist": 5.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 1,
+        "sweep": 1
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          2,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          3,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          4,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          5,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 10,
+      "path_length": 6.0,
+      "spawn": [
+        2.5,
+        -0.5,
+        0
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 3,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 7,
+        "sweep": 0
+      },
+      "goal_events": [
+        [
+          "hint",
+          1,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          7,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          8,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          9,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 33,
+      "path_length": 18.0,
+      "spawn": [
+        2.5,
+        3.5,
+        0
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 9,
+        "frontier": 13,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 7,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          15,
+          [
+            7,
+            8
+          ]
+        ],
+        [
+          "hint",
+          20,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          22,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          23,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          24,
+          [
+            8,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 21,
+      "path_length": 10.0,
+      "spawn": [
+        -2.5,
+        2.5,
+        0
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 9,
+        "frontier": 3,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 6,
+        "sweep": 3
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          4,
+          [
+            7,
+            8
+          ]
+        ],
+        [
+          "hint",
+          8,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          10,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          11,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          12,
+          [
+            8,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 34,
+      "path_length": 20.0,
+      "spawn": [
+        0.5,
+        -2.5,
+        270
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 18,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 3,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          24,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          27,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          28,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          29,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          33,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 35,
+      "path_length": 20.0,
+      "spawn": [
+        4.5,
+        3.5,
+        0
+      ],
+      "spawn_dist": 1.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 9,
+        "frontier": 15,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 7,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          17,
+          [
+            7,
+            8
+          ]
+        ],
+        [
+          "hint",
+          22,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          24,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          25,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          26,
+          [
+            8,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 33,
+      "path_length": 20.0,
+      "spawn": [
+        1.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 20,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 3,
+        "sweep": 5
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          27,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          30,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          31,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          32,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 18,
+      "path_length": 8.0,
+      "spawn": [
+        -0.5,
+        2.5,
+        90
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 7,
+        "frontier": 3,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 6,
+        "sweep": 2
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          3,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          8,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          9,
+          [
+            8,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 6,
+      "path_length": 3.0,
+      "spawn": [
+        4.5,
+        0.5,
+        180
+      ],
+      "spawn_dist": 4.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 3,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 1,
+        "sweep": 2
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          3,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          4,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          5,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 14,
+      "path_length": 7.0,
+      "spawn": [
+        3.5,
+        -2.5,
+        90
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 3,
+        "sweep": 3
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          4,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          7,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          8,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          9,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          13,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 33,
+      "path_length": 17.0,
+      "spawn": [
+        -3.5,
+        0.5,
+        180
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 21,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 6
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          28,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          30,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          31,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          32,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 79,
+      "path_length": 43.0,
+      "spawn": [
+        1.5,
+        1.5,
+        180
+      ],
+      "spawn_dist": 6.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 55,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 3,
+        "sweep": 12
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "sweep",
+          51
+        ],
+        [
+          "hint",
+          69,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          72,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          73,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          74,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          78,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 35,
+      "path_length": 20.0,
+      "spawn": [
+        -0.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 19,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 3,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          25,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          28,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          29,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          30,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          34,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 32,
+      "path_length": 15.0,
+      "spawn": [
+        -3.5,
+        0.5,
+        90
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 20,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 1,
+        "sweep": 6
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          28,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          29,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          30,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          31,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 42,
+      "path_length": 22.0,
+      "spawn": [
+        1.5,
+        -1.5,
+        0
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 22,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 3,
+        "sweep": 8
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          32,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          35,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          36,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          37,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          41,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 33,
+      "path_length": 21.0,
+      "spawn": [
+        1.5,
+        3.5,
+        270
+      ],
+      "spawn_dist": 4.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 7,
+        "frontier": 15,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 11,
+        "sweep": 0
+      },
+      "goal_events": [
+        [
+          "hint",
+          1,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "hint",
+          20,
+          [
+            7,
+            8
+          ]
+        ],
+        [
+          "hint",
+          25,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          27,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          28,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          29,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 7,
+      "path_length": 4.0,
+      "spawn": [
+        4.5,
+        -0.5,
+        180
+      ],
+      "spawn_dist": 5.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 1,
+        "sweep": 2
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          3,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          4,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          5,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          6,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    }
+  ],
+  "env6|p2b_vc WV50": [
+    {
+      "success": true,
+      "steps": 5,
+      "path_length": 2.0,
+      "spawn": [
+        4.5,
+        1.5,
+        180
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 2,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 1,
+        "sweep": 2
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          3,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          4,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 8,
+      "path_length": 6.0,
+      "spawn": [
+        -2.5,
+        4.5,
+        180
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 1
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          2,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          4,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          5,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          6,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          7,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 60,
+      "path_length": 35.0,
+      "spawn": [
+        3.5,
+        3.5,
+        90
+      ],
+      "spawn_dist": 2.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 30,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 22,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          20,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          24,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          25,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          32,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "hint",
+          51,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          52,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          57,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          58,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          59,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 59,
+      "path_length": 34.0,
+      "spawn": [
+        2.5,
+        3.5,
+        90
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 29,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 22,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          19,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          23,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          24,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          31,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "hint",
+          50,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          51,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          56,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          57,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          58,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 29,
+      "path_length": 17.0,
+      "spawn": [
+        -1.5,
+        -1.5,
+        0
+      ],
+      "spawn_dist": 12.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 18,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          23,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          25,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          26,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          27,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          28,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 56,
+      "path_length": 30.0,
+      "spawn": [
+        3.5,
+        2.5,
+        90
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 40,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 2,
+        "sweep": 8
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          29
+        ],
+        [
+          "hint",
+          50,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          52,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          53,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          54,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          55,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 29,
+      "path_length": 18.0,
+      "spawn": [
+        -0.5,
+        -1.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 18,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          23,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          25,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          26,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          27,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          28,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 15,
+      "path_length": 7.0,
+      "spawn": [
+        3.5,
+        -0.5,
+        90
+      ],
+      "spawn_dist": 6.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 3,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 1,
+        "sweep": 3
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          4,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          5,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          6,
+          [
+            9,
+            8
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 34,
+      "path_length": 20.0,
+      "spawn": [
+        -3.5,
+        -0.5,
+        0
+      ],
+      "spawn_dist": 13.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 21,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 6
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          28,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          30,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          31,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          32,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          33,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 48,
+      "path_length": 28.0,
+      "spawn": [
+        2.5,
+        1.5,
+        0
+      ],
+      "spawn_dist": 5.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 37,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          42,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          44,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          45,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          46,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          47,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 7,
+      "path_length": 6.0,
+      "spawn": [
+        -2.5,
+        4.5,
+        270
+      ],
+      "spawn_dist": 7.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 0,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 0
+      },
+      "goal_events": [
+        [
+          "hint",
+          1,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          3,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          4,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          5,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          6,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 52,
+      "path_length": 30.0,
+      "spawn": [
+        -1.5,
+        -0.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 9,
+        "frontier": 32,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 3,
+        "sweep": 8
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          26
+        ],
+        [
+          "hint",
+          38,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          41,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          42,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          43,
+          [
+            9,
+            8
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 17,
+      "path_length": 8.0,
+      "spawn": [
+        -3.5,
+        3.5,
+        180
+      ],
+      "spawn_dist": 9.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 8,
+        "frontier": 2,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 3,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          7,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          8,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          10,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          14,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          15,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          16,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 36,
+      "path_length": 21.0,
+      "spawn": [
+        1.5,
+        -0.5,
+        180
+      ],
+      "spawn_dist": 8.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 23,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 6
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          28
+        ],
+        [
+          "hint",
+          30,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          32,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          33,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          34,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          35,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 35,
+      "path_length": 22.0,
+      "spawn": [
+        -2.5,
+        0.5,
+        90
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 23,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 5
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "sweep",
+          28
+        ],
+        [
+          "hint",
+          29,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          31,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          32,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          33,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          34,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 36,
+      "path_length": 22.0,
+      "spawn": [
+        0.5,
+        -2.5,
+        180
+      ],
+      "spawn_dist": 11.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 9,
+        "frontier": 20,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 3,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          22,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          25,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          26,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          27,
+          [
+            9,
+            8
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 24,
+      "path_length": 14.0,
+      "spawn": [
+        -3.5,
+        -2.5,
+        180
+      ],
+      "spawn_dist": 15.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 13,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          18,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          20,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          21,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          22,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          23,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 29,
+      "path_length": 17.0,
+      "spawn": [
+        -1.5,
+        -3.5,
+        180
+      ],
+      "spawn_dist": 14.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 18,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 2,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          23,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          25,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          26,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          27,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          28,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 59,
+      "path_length": 34.0,
+      "spawn": [
+        2.5,
+        3.5,
+        90
+      ],
+      "spawn_dist": 3.0,
+      "final_pos": [
+        3.5,
+        4.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 4,
+        "frontier": 29,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 0,
+        "hint": 22,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          19,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          23,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          24,
+          [
+            8,
+            8
+          ]
+        ],
+        [
+          "hint",
+          31,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "hint",
+          50,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "hint",
+          51,
+          [
+            8,
+            9
+          ]
+        ],
+        [
+          "mark",
+          56,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          57,
+          [
+            9,
+            9
+          ]
+        ],
+        [
+          "mark",
+          58,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    },
+    {
+      "success": true,
+      "steps": 31,
+      "path_length": 18.0,
+      "spawn": [
+        -0.5,
+        -3.5,
+        270
+      ],
+      "spawn_dist": 13.0,
+      "final_pos": [
+        4.5,
+        3.5
+      ],
+      "dist_to_diamond": 1.0,
+      "step_kinds": {
+        "diamond": 5,
+        "frontier": 19,
+        "no_target": 0,
+        "stuck_override": 0,
+        "spin_break": 1,
+        "hint": 2,
+        "sweep": 4
+      },
+      "goal_events": [
+        [
+          "sweep",
+          1
+        ],
+        [
+          "hint",
+          25,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          27,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          28,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          29,
+          [
+            9,
+            8
+          ]
+        ],
+        [
+          "mark",
+          30,
+          [
+            9,
+            9
+          ]
+        ]
+      ]
+    }
+  ]
+}

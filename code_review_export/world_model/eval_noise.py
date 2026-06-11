@@ -35,6 +35,7 @@ Usage:
 import os
 import json
 import time
+import random
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
@@ -72,7 +73,7 @@ def arms(wv_value):
     ]
 
 
-def run_cell(agent_host, ae, dyn, value, env_name, arm, noise, n):
+def run_cell(agent_host, ae, dyn, value, env_name, arm, noise, n, spawns=None):
     configure_env(env_name)
     apply_weights(arm["weights"])
     agent.POS_NOISE_STD = float(noise)
@@ -83,8 +84,9 @@ def run_cell(agent_host, ae, dyn, value, env_name, arm, noise, n):
         print(f"  {env_name} | {arm['name']} | noise={noise:g} | ep {i+1}/{n}")
         print(f"{'='*60}")
         try:
-            r = agent.run_episode(agent_host, ae, dyn, value,
-                                  save=False, verbose=False)
+            r = agent.run_episode(agent_host, ae, dyn, value, save=False,
+                                  verbose=False,
+                                  spawn=(spawns[i] if spawns else None))
             tag = "OK " if r["success"] else "FAIL"
             print(f"  [{tag}] steps={r['steps']}  path={r['path_length']:.1f}  "
                   f"spawn_dist={r['spawn_dist']:.1f}")
@@ -180,11 +182,21 @@ def main():
                     help="W_V for the value-MPC arm (default = agent default)")
     ap.add_argument("--value", default=None,
                     help="override value-head weights (A/B under noise)")
+    ap.add_argument("--ae", default=None,
+                    help="override AE weights (e.g. ae_predictive.pth)")
+    ap.add_argument("--dyn", default=None,
+                    help="override dynamics weights (e.g. dynamics_predictive_vc.pth)")
     args = ap.parse_args()
 
+    if args.ae:
+        agent.AE_WEIGHTS = args.ae
+        print(f"[stack] AE -> {args.ae}")
+    if args.dyn:
+        agent.DYN_WEIGHTS = args.dyn
+        print(f"[stack] dynamics -> {args.dyn}")
     if args.value:
         agent.VALUE_WEIGHTS = args.value
-        print(f"[A/B] value head override -> {args.value}")
+        print(f"[stack] value head -> {args.value}")
 
     np.random.seed(SEED)
     agent.POS_NOISE_MODEL = args.noise_model
@@ -208,13 +220,18 @@ def main():
     ts = time.strftime("%Y%m%d_%H%M%S")
     for env_id in args.envs:
         env_name = f"env{env_id}"
+        configure_env(env_name)
+        # paired spawns: one fixed spawn set per env, reused by every (arm,noise)
+        # cell so the arms are compared on identical start positions.
+        srng = random.Random(SEED + env_id)
+        spawns = [agent.pick_random_spawn(srng) for _ in range(args.n)]
         for arm in arm_specs:
             for nz in noises:
                 print(f"\n{'#'*60}")
                 print(f"  {env_name} | {arm['name']} | noise={nz:g} | {args.n} eps")
                 print(f"{'#'*60}")
                 res = run_cell(agent_host, ae, dyn, value,
-                               env_name, arm, nz, args.n)
+                               env_name, arm, nz, args.n, spawns)
                 all_results[(env_name, arm["name"], nz)] = res
 
                 dump = {f"{k[0]}|{k[1]}|{k[2]}": v
