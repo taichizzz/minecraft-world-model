@@ -1,0 +1,6 @@
+RANKED BY SPL
+Env    Config                 SR     SPL   AvgSucc    N
+-------------------------------------------------------
+env6   p2b_vc WV50         100%   0.392      50.2   20
+env5   p2b_vc WV50          90%   0.145      75.1   20
+env4   p2b_vc WV50          50%   0.140      72.6   20

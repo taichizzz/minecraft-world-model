@@ -83,6 +83,19 @@ CONFIRM_FRAMES = 2
 # chasing a wrong hypothesis while the agent keeps moving (not stuck).
 DIAMOND_STALE_STEPS = 15
 
+# ── Goal memory (env4 diagnosis: failures spend ~105/107 steps exploring,
+# never holding a goal lock; sightings were discarded or marks evaporated) ──
+# "evidence": a confirmed mark is cleared only by COUNTER-EVIDENCE (looking
+#             at the cell from close range and seeing no cyan), since the
+#             diamond is a static landmark. "timer": legacy 15-step decay.
+GOAL_MEMORY = "evidence"
+GOAL_SEE_RANGE = 3.5          # blocks: close enough that detector must fire
+GOAL_SEE_HALF_FOV_DEG = 25.0  # looking-at-cell tolerance (camera FOV/2 - margin)
+COUNTEREVIDENCE_FRAMES = 3    # consecutive should-see-it misses before clearing
+HINT_TTL_STEPS = 30           # unconfirmed-glimpse soft target lifetime
+SWEEP_AFTER_STEPS = 25        # sighting-less steps before a 360° look-around
+K_AREA_DIST = 2000.0          # blob area ~ K/d^2  ->  d̂ = sqrt(K/area)
+
 # Print diamond localization details for debugging.
 DEBUG_DIAMOND_EST = True
 
@@ -172,9 +185,10 @@ def pick_random_spawn(rng=None):
     yaw = rng.choice([0, 90, 180, 270])
     return bx + 0.5, bz + 0.5, yaw
 
-AE_WEIGHTS = "ae_multienv.pth"
-DYN_WEIGHTS = "dynamics_multienv.pth"
-VALUE_WEIGHTS = "value_head_dist.pth"
+# Current best stack ("p2b_vc", see MODELS.md). Eval scripts may override.
+AE_WEIGHTS = "ae_predictive.pth"
+DYN_WEIGHTS = "dynamics_predictive_vc.pth"
+VALUE_WEIGHTS = "value_head_dist_pred.pth"
 
 LATENT_DIM = 128
 NUM_ACTIONS = 3
@@ -275,6 +289,86 @@ def yaw_to_forward(yaw_deg):
     return -np.sin(rad), np.cos(rad)
 
 
+def est_dist_from_area(area):
+    """Coarse range estimate from blob size: apparent area ~ K/d^2."""
+    d = float(np.sqrt(K_AREA_DIST / max(float(area), 1.0)))
+    return float(np.clip(d, 1.0, 2 * ROOM_HALF - 1))
+
+
+def bearing_diff_deg(x, z, yaw, cell):
+    """|angle| between camera forward and the direction to cell center."""
+    tx, tz = cell[0] + GRID_LO + 0.5, cell[1] + GRID_LO + 0.5   # grid -> world
+    dx, dz = tx - x, tz - z
+    if abs(dx) < 1e-9 and abs(dz) < 1e-9:
+        return 0.0
+    yaw_to = np.degrees(np.arctan2(-dx, dz)) % 360.0
+    return abs(((yaw_to - yaw + 180.0) % 360.0) - 180.0)
+
+
+def looking_at_cell(x, z, yaw, cell):
+    """True if cell is within detector-reliable range AND inside the camera
+    cone — i.e. the detector SHOULD fire if a diamond were really there.
+    Interior obstacles are 1 block high, the camera sees over them, so no
+    occlusion test is needed inside the room."""
+    tx, tz = cell[0] + GRID_LO + 0.5, cell[1] + GRID_LO + 0.5
+    if np.hypot(tx - x, tz - z) > GOAL_SEE_RANGE:
+        return False
+    return bearing_diff_deg(x, z, yaw, cell) <= GOAL_SEE_HALF_FOV_DEG
+
+
+def blob_at_edge(blob, frame):
+    """Blob bbox touches the frame border (bearing estimate unreliable)."""
+    bbox = blob.get("bbox", None)
+    if bbox is None:
+        return False
+    bx1, by1, bx2, by2 = bbox
+    img_h, img_w = frame.shape[:2]
+    return (bx1 < EDGE_MARGIN_PX or by1 < EDGE_MARGIN_PX
+            or bx2 > (img_w - 1 - EDGE_MARGIN_PX)
+            or by2 > (img_h - 1 - EDGE_MARGIN_PX))
+
+
+def estimate_sighting_cell(grid, x, z, yaw, blob, frame, want_unknown):
+    """Best-guess map cell for a sighted blob.
+
+    Ray-cast along the blob bearing, but — unlike the old version — the ray
+    passes OVER believed interior obstacles (they are 1 block high; the
+    camera sees over them; the old 'break on OBSTACLE' silently discarded
+    confirmed sightings in cluttered/explored rooms — the env4 failure).
+    Among candidates, pick the one nearest the blob-size range estimate d̂
+    (the old 'farthest unknown' overshot past the diamond).
+
+    want_unknown=True  -> hard mark: only UNKNOWN/DIAMOND cells qualify
+                          (a FREE cell was walked on, so it can't hold the
+                          diamond block).
+    want_unknown=False -> soft hint: any non-OBSTACLE cell qualifies.
+    """
+    cx_pixel = float(blob["cx"])
+    img_w = frame.shape[1]
+    img_center = (img_w - 1) / 2.0
+    angle_offset = ((cx_pixel - img_center) / img_center) * (FOV_DEG / 2.0)
+    effective_yaw = (yaw + angle_offset) % 360.0
+    dx, dz = yaw_to_forward(effective_yaw)
+    d_hat = est_dist_from_area(blob.get("area", 1))
+
+    best = None
+    for k in range(1, ROOM_HALF * 2 + 2):
+        tx, tz = x + dx * k, z + dz * k
+        if abs(tx) > ROOM_HALF + 0.5 or abs(tz) > ROOM_HALF + 0.5:
+            break
+        tgx, tgz = world_to_grid(tx, tz)
+        c = grid[tgz, tgx]
+        if want_unknown:
+            ok = c in (UNKNOWN, DIAMOND)
+        else:
+            ok = c != OBSTACLE
+        if ok:
+            score = abs(k - d_hat)
+            if best is None or score < best[0]:
+                best = (score, (tgx, tgz))
+    return None if best is None else best[1]
+
+
 def mark_current_free(grid, x, z):
     gx, gz = world_to_grid(x, z)
 
@@ -300,82 +394,33 @@ def maybe_mark_diamond(grid, x, z, yaw, frame, diamond_visible, blob,
     consecutive frames before we commit a mark to the map.
     """
     if not diamond_visible or blob is None:
-        return
+        return None, "not_visible"
 
     # ── Temporal confirmation ──
     if confirm_counter < CONFIRM_FRAMES:
-        if DEBUG_DIAMOND_EST:
-            print(f"  DIAMOND_EST WAIT confirm={confirm_counter}/{CONFIRM_FRAMES}")
-        return
+        return None, "wait_confirm"
 
     area = int(blob.get("area", 0))
 
     # Do not create a map target from weak detections.
     if area < MARK_MIN_PIXELS:
-        return
+        return None, "weak"
 
     # ── Edge rejection: skip blobs touching the frame border ──
-    # bbox format from detect_diamond: (x1, y1, x2, y2) — top-left to bottom-right
-    bbox = blob.get("bbox", None)
-    if bbox is not None:
-        bx1, by1, bx2, by2 = bbox
-        img_h, img_w_full = frame.shape[:2]
-        if (bx1 < EDGE_MARGIN_PX or by1 < EDGE_MARGIN_PX
-                or bx2 > (img_w_full - 1 - EDGE_MARGIN_PX)
-                or by2 > (img_h - 1 - EDGE_MARGIN_PX)):
-            if DEBUG_DIAMOND_EST:
-                print(f"  DIAMOND_EST EDGE_REJECT bbox={bbox}")
-            return
+    if blob_at_edge(blob, frame):
+        return None, "edge"
 
-    cx_pixel = float(blob["cx"])
-    img_w = frame.shape[1]
-    img_center = (img_w - 1) / 2.0
-
-    # Convert horizontal image position to yaw offset.
-    # Left side of image -> negative offset.
-    # Right side of image -> positive offset.
-    angle_offset = ((cx_pixel - img_center) / img_center) * (FOV_DEG / 2.0)
-    effective_yaw = (yaw + angle_offset) % 360.0
-
-    MIN_RAY_K = 3
-    dx, dz = yaw_to_forward(effective_yaw)
-
-    farthest = None
-    hit_obstacle_early = False
-
-    for k in range(1, ROOM_HALF * 2 + 2):
-        tx, tz = x + dx * k, z + dz * k
-
-        if abs(tx) > ROOM_HALF + 0.5 or abs(tz) > ROOM_HALF + 0.5:
-            break
-
-        tgx, tgz = world_to_grid(tx, tz)
-        cell = grid[tgz, tgx]
-
-        if cell == OBSTACLE:
-            if k < MIN_RAY_K:
-                hit_obstacle_early = True
-            break
-
-        if cell == UNKNOWN and k >= MIN_RAY_K:
-            farthest = (tgx, tgz)
-
-    if farthest is not None and not hit_obstacle_early:
+    marked = estimate_sighting_cell(grid, x, z, yaw, blob, frame,
+                                    want_unknown=True)
+    if marked is not None:
         # Keep only the newest strong DIAMOND hypothesis.
-        # This prevents fake cyan regions from accumulating into a vertical strip.
         grid[grid == DIAMOND] = UNKNOWN
-        grid[farthest[1], farthest[0]] = DIAMOND
-
-    if DEBUG_DIAMOND_EST:
-        print(
-            f"  DIAMOND_EST area={area} "
-            f"bbox={blob.get('bbox', None)} "
-            f"aspect={blob.get('aspect', 0):.2f} "
-            f"fill={blob.get('fill', 0):.2f} "
-            f"cx={cx_pixel:.1f} "
-            f"yaw={yaw:.1f} eff_yaw={effective_yaw:.1f} "
-            f"marked={farthest}"
-        )
+        grid[marked[1], marked[0]] = DIAMOND
+        if DEBUG_DIAMOND_EST:
+            print(f"  DIAMOND_EST area={area} dhat={est_dist_from_area(area):.1f} "
+                  f"yaw={yaw:.1f} marked={marked}")
+        return marked, "marked"
+    return None, "no_candidate"
 
 
 def maybe_mark_obstacle(grid, prev_x, prev_z, prev_yaw, prev_action, cur_x, cur_z):
@@ -429,11 +474,44 @@ def find_frontier_cell(grid, start_gxgz):
     return None
 
 
+BFS_UNREACHABLE = 999.0
+
+
+def bfs_dist_field(grid, target_cell):
+    """Geodesic distance (in moves) from every cell to target_cell on the
+    BELIEVED map: 4-connected BFS that does not pass through OBSTACLE cells.
+    UNKNOWN is optimistically passable (needed to plan toward frontiers).
+
+    Replaces straight-line Manhattan distance in MPC scoring: Manhattan
+    measures through walls, so in cluttered rooms it parks the agent against
+    the wall nearest the target (the env4 failure). The geodesic knows that
+    cell is far in *path* terms. Unreachable cells get BFS_UNREACHABLE.
+    """
+    tgx, tgz = int(target_cell[0]), int(target_cell[1])
+    field = np.full((GRID_SIZE, GRID_SIZE), BFS_UNREACHABLE, dtype=np.float32)
+    if grid[tgz, tgx] == OBSTACLE:
+        return field
+    field[tgz, tgx] = 0.0
+    queue = [(tgx, tgz)]
+    while queue:
+        cx, cz = queue.pop(0)
+        d = field[cz, cx] + 1.0
+        for nx, nz in ((cx + 1, cz), (cx - 1, cz), (cx, cz + 1), (cx, cz - 1)):
+            if not (0 <= nx < GRID_SIZE and 0 <= nz < GRID_SIZE):
+                continue
+            if grid[nz, nx] == OBSTACLE or field[nz, nx] <= d:
+                continue
+            field[nz, nx] = d
+            queue.append((nx, nz))
+    return field
+
+
 # ============= MPC core =============
 def mpc_plan(grid, x, z, yaw, frame, ae, dyn, value, target_cell):
     """Enumerate all action sequences of length MPC_HORIZON, score by
     kinematic distance + V_pred at horizon, return the first action of
-    the best sequence."""
+    the best sequence. Distance-to-target = BFS geodesic on the believed
+    map (falls back to Manhattan if belief says target is unreachable)."""
     H = MPC_HORIZON
     seqs = np.array(list(itertools.product(range(NUM_ACTIONS), repeat=H)),
                     dtype=np.int64)             # (N, H)
@@ -448,6 +526,17 @@ def mpc_plan(grid, x, z, yaw, frame, ae, dyn, value, target_cell):
     # track distance to target after each step so we can reward sequences
     # that reach the goal *earlier* in the rollout, not just at the end.
     dist_per_step = np.zeros((N, H), dtype=np.float32)
+
+    # geodesic distance field on the believed map; if the agent's own cell
+    # can't reach the target in belief (sealed pocket / bad marks), fall
+    # back to Manhattan so scoring stays informative rather than flat.
+    dfield = bfs_dist_field(grid, target_cell)
+    agx, agz = world_to_grid(float(x), float(z))
+    if dfield[agz, agx] >= BFS_UNREACHABLE:
+        jj, ii = np.meshgrid(np.arange(GRID_SIZE), np.arange(GRID_SIZE),
+                             indexing="ij")          # jj=gz rows, ii=gx cols
+        dfield = (np.abs(ii - target_cell[0])
+                  + np.abs(jj - target_cell[1])).astype(np.float32)
 
     for h in range(H):
         a = seqs[:, h]                          # (N,)
@@ -473,17 +562,15 @@ def mpc_plan(grid, x, z, yaw, frame, ae, dyn, value, target_cell):
                     xs[i] = new_xs[i]
                     zs[i] = new_zs[i]
 
-        # record dist-to-target after this action
+        # record geodesic dist-to-target after this action
         gx_h = np.clip(np.floor(xs).astype(int) - GRID_LO, 0, GRID_SIZE - 1)
         gz_h = np.clip(np.floor(zs).astype(int) - GRID_LO, 0, GRID_SIZE - 1)
-        dist_per_step[:, h] = (
-            np.abs(gx_h - target_cell[0]) + np.abs(gz_h - target_cell[1])
-        )
+        dist_per_step[:, h] = dfield[gz_h, gx_h]
 
     # final cell of each sequence
     end_gx = np.clip(np.floor(xs).astype(int) - GRID_LO, 0, GRID_SIZE - 1)
     end_gz = np.clip(np.floor(zs).astype(int) - GRID_LO, 0, GRID_SIZE - 1)
-    dist = np.abs(end_gx - target_cell[0]) + np.abs(end_gz - target_cell[1])
+    dist = dfield[end_gz, end_gx]
     sum_dist = dist_per_step.sum(axis=1)
 
     # ---- batched dyn rollout: discounted V sum Σ γ^h V(z_h) ----
@@ -517,7 +604,8 @@ def mpc_plan(grid, x, z, yaw, frame, ae, dyn, value, target_cell):
 
 
 def planned_action(grid, current_gxgz, current_x, current_z, current_yaw,
-                   frame, ae, dyn, value, stuck_count, prev_action):
+                   frame, ae, dyn, value, stuck_count, prev_action,
+                   hint_cell=None):
     """Pick a target cell, run MPC, return action.
 
     Target priority: closest DIAMOND if any -> nearest frontier -> stuck escape.
@@ -536,6 +624,14 @@ def planned_action(grid, current_gxgz, current_x, current_z, current_yaw,
         target = cell
         target_label = "DIAMOND"
         break
+
+    # unconfirmed-glimpse soft target: go verify the sighting instead of
+    # dropping the evidence (fails -> hint expires, exploration resumes)
+    if target is None and hint_cell is not None and hint_cell != current_gxgz:
+        hgx, hgz = hint_cell
+        if grid[hgz, hgx] != OBSTACLE:
+            target = hint_cell
+            target_label = "HINT"
 
     if target is None:
         frontier = find_frontier_cell(grid, current_gxgz)
@@ -647,6 +743,16 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True, spawn=None)
 
     pos_list, yaw_list, v_list, action_list = [], [], [], []
     truepos_list = []        # TRUE positions, for success/SPL under POS_NOISE_STD
+    # step-outcome counters: expose WHY an episode timed out (diamond-chasing,
+    # endless frontier exploration, no-target spinning, stuck overrides)
+    nsteps = {"diamond": 0, "frontier": 0, "no_target": 0,
+              "stuck_override": 0, "spin_break": 0, "hint": 0, "sweep": 0}
+    goal_events = []               # (what, step, ...) — mark/clear/hint/sweep log
+    hint_cell = None               # unconfirmed-glimpse soft target
+    hint_step = -10**9
+    steps_since_sighting = 10**9   # large -> sweep allowed early if needed
+    goal_counterev = 0             # consecutive should-see-it detector misses
+    sweep_queue = []               # pending 360° look-around turns
     prev_x = prev_z = prev_yaw = None
     prev_action = None
     stuck_count = 0
@@ -693,18 +799,59 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True, spawn=None)
         else:
             diamond_confirm = 0
             steps_since_diamond_seen += 1
+        if diamond_visible:
+            steps_since_sighting = 0
+        else:
+            steps_since_sighting += 1
 
-        # ── Stale diamond timeout ──
-        if steps_since_diamond_seen >= DIAMOND_STALE_STEPS and (grid == DIAMOND).any():
-            grid[grid == DIAMOND] = UNKNOWN
-            if verbose:
-                print(f"  [STALE DIAMOND cleared at step {step} — "
-                      f"not seen for {steps_since_diamond_seen} steps]")
+        # ── Goal forgetting ──
+        if GOAL_MEMORY == "timer":
+            # legacy: decay after N unseen steps (deletes static-landmark
+            # knowledge merely because the agent turned away)
+            if steps_since_diamond_seen >= DIAMOND_STALE_STEPS and (grid == DIAMOND).any():
+                grid[grid == DIAMOND] = UNKNOWN
+                if verbose:
+                    print(f"  [STALE DIAMOND cleared at step {step}]")
+        else:
+            # evidence-based: clear only after COUNTEREVIDENCE_FRAMES frames
+            # of looking straight at the marked cell, close, detector silent
+            dcells = np.argwhere(grid == DIAMOND)
+            if len(dcells) and not diamond_visible:
+                mgz, mgx = int(dcells[0][0]), int(dcells[0][1])
+                if looking_at_cell(x, z_pos, yaw, (mgx, mgz)):
+                    goal_counterev += 1
+                    if goal_counterev >= COUNTEREVIDENCE_FRAMES:
+                        grid[grid == DIAMOND] = UNKNOWN
+                        goal_events.append(("clear_evidence", step, (mgx, mgz)))
+                        goal_counterev = 0
+                else:
+                    goal_counterev = 0
+            else:
+                goal_counterev = 0
 
         maybe_mark_obstacle(grid, prev_x, prev_z, prev_yaw, prev_action, x, z_pos)
         mark_current_free(grid, x, z_pos)
-        maybe_mark_diamond(grid, x, z_pos, yaw, frame, diamond_visible, blob,
-                           confirm_counter=diamond_confirm)
+        marked, mark_status = maybe_mark_diamond(
+            grid, x, z_pos, yaw, frame, diamond_visible, blob,
+            confirm_counter=diamond_confirm)
+        if marked is not None:
+            goal_events.append(("mark", step, marked))
+            hint_cell = None                      # hard mark supersedes hint
+        elif mark_status == "no_candidate":
+            goal_events.append(("mark_fail_no_candidate", step))
+
+        # ── Glimpse hint: keep sub-confirmation sightings as a soft target ──
+        if (diamond_visible and blob is not None and not (grid == DIAMOND).any()
+                and not blob_at_edge(blob, frame)):
+            hc = estimate_sighting_cell(grid, x, z_pos, yaw, blob, frame,
+                                        want_unknown=False)
+            if hc is not None and hc != hint_cell:
+                goal_events.append(("hint", step, hc))
+            if hc is not None:
+                hint_cell, hint_step = hc, step
+        if hint_cell is not None and (step - hint_step > HINT_TTL_STEPS
+                                      or hint_cell == world_to_grid(x, z_pos)):
+            hint_cell = None                      # expired or reached: let go
 
         if prev_action == 0:
             if (prev_x is not None
@@ -724,6 +871,7 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True, spawn=None)
         if same_pos_count >= 6 and prev_action != 0:
             agent_host.sendCommand(ACTIONS_STR[0])
             same_pos_count = 0
+            nsteps["spin_break"] += 1
             if verbose:
                 print(f"  [SPIN BREAK: forced move at step {step}]")
             pos_list.append([x, z_pos])
@@ -743,10 +891,38 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True, spawn=None)
 
         cur_grid = world_to_grid(x, z_pos)
 
-        action_idx, reason, v_pred, dist = planned_action(
-            grid, cur_grid, x, z_pos, yaw, frame,
-            ae, dyn, value, stuck_count, prev_action
-        )
+        # ── 360° look-around: exploration covers cells, detection needs
+        # ANGLES — sweep when nothing goal-related has been seen for a while
+        have_goal_lead = (grid == DIAMOND).any() or hint_cell is not None
+        if have_goal_lead:
+            sweep_queue = []                      # lead found: abort sweep
+        elif not sweep_queue and steps_since_sighting >= SWEEP_AFTER_STEPS:
+            sweep_queue = [1, 1, 1, 1]            # four turnR = full circle
+            steps_since_sighting = 0              # one sweep per drought
+            goal_events.append(("sweep", step))
+
+        if sweep_queue:
+            action_idx = sweep_queue.pop(0)
+            reason, v_pred, dist = "sweep (look-around)", 0.0, 0.0
+        else:
+            action_idx, reason, v_pred, dist = planned_action(
+                grid, cur_grid, x, z_pos, yaw, frame,
+                ae, dyn, value, stuck_count, prev_action,
+                hint_cell=hint_cell
+            )
+
+        if reason.startswith("sweep"):
+            nsteps["sweep"] += 1
+        elif "override" in reason:
+            nsteps["stuck_override"] += 1
+        elif reason.startswith("MPC->DIAMOND"):
+            nsteps["diamond"] += 1
+        elif reason.startswith("MPC->HINT"):
+            nsteps["hint"] += 1
+        elif reason.startswith("MPC->frontier"):
+            nsteps["frontier"] += 1
+        elif reason.startswith("no_target"):
+            nsteps["no_target"] += 1
 
         agent_host.sendCommand(ACTIONS_STR[action_idx])
 
@@ -804,6 +980,8 @@ def run_episode(agent_host, ae, dyn, value, save=True, verbose=True, spawn=None)
         "spawn_dist": spawn_dist,
         "final_pos": (final_x, final_z),
         "dist_to_diamond": dist_to_diamond,
+        "step_kinds": dict(nsteps),
+        "goal_events": goal_events[:300],
     }
 
 

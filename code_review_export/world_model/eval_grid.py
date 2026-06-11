@@ -30,6 +30,7 @@ Usage:
 import os
 import json
 import time
+import random
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
@@ -44,6 +45,8 @@ SEED = 42
 STACKS = {
     "old": ("ae_multienv.pth", "dynamics_multienv.pth", "value_head_dist.pth"),
     "p2b": ("ae_predictive.pth", "dynamics_predictive.pth", "value_head_dist_pred.pth"),
+    "p2b_vc": ("ae_predictive.pth", "dynamics_predictive_vc.pth", "value_head_dist_pred.pth"),
+    "p2b_aug": ("ae_predictive.pth", "dynamics_predictive_vc.pth", "value_head_dist_pred_aug.pth"),
 }
 
 
@@ -77,15 +80,16 @@ def build_configs(stacks, wvs, gammas):
     return configs
 
 
-def run_cell(agent_host, ae, dyn, value, env_name, weights, n, label):
+def run_cell(agent_host, ae, dyn, value, env_name, weights, n, label, spawns=None):
     configure_env(env_name)
     apply_weights(weights)
     results = []
     for i in range(n):
         print(f"\n{'='*60}\n  {env_name} | {label} | ep {i+1}/{n}\n{'='*60}")
         try:
-            r = agent.run_episode(agent_host, ae, dyn, value,
-                                  save=False, verbose=False)
+            r = agent.run_episode(agent_host, ae, dyn, value, save=False,
+                                  verbose=False,
+                                  spawn=(spawns[i] if spawns else None))
             tag = "OK " if r["success"] else "FAIL"
             print(f"  [{tag}] steps={r['steps']}  path={r['path_length']:.1f}  "
                   f"spawn_dist={r['spawn_dist']:.1f}")
@@ -136,6 +140,11 @@ def main():
 
     for env_id in args.envs:
         env_name = f"env{env_id}"
+        configure_env(env_name)
+        # paired spawns: one fixed spawn set per env, reused by EVERY config so
+        # a config's SPL difference reflects the model, not spawn luck.
+        srng = random.Random(SEED + env_id)
+        spawns = [agent.pick_random_spawn(srng) for _ in range(args.n)]
         loaded = {}
         for cfg in configs:
             if cfg["stack"] not in loaded:
@@ -143,7 +152,7 @@ def main():
             ae, dyn, value = loaded[cfg["stack"]]
             print(f"\n{'#'*60}\n  {env_name} | {cfg['label']} | {args.n} eps\n{'#'*60}")
             res = run_cell(agent_host, ae, dyn, value, env_name,
-                           cfg["weights"], args.n, cfg["label"])
+                           cfg["weights"], args.n, cfg["label"], spawns)
             all_results[(env_name, cfg["label"])] = res
             with open(os.path.join(OUT_DIR, f"combo_raw_{ts}.json"), "w") as f:
                 json.dump({f"{k[0]}|{k[1]}": v for k, v in all_results.items()},

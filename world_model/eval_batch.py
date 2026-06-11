@@ -239,14 +239,26 @@ def main():
     parser.add_argument("--value", default=None,
                         help="override value-head weights (e.g. "
                              "value_head_stepstogo.pth) for A/B comparison")
+    parser.add_argument("--ae", default=None,
+                        help="override AE weights (e.g. ae_predictive.pth)")
+    parser.add_argument("--dyn", default=None,
+                        help="override dynamics weights")
+    parser.add_argument("--wm-wv", type=float, default=50.0,
+                        help="W_V used by the --wm-only ablation")
     args = parser.parse_args()
 
+    if args.ae:
+        agent.AE_WEIGHTS = args.ae
+        print(f"[stack] AE -> {args.ae}")
+    if args.dyn:
+        agent.DYN_WEIGHTS = args.dyn
+        print(f"[stack] dynamics -> {args.dyn}")
     if args.value:
         agent.VALUE_WEIGHTS = args.value
-        print(f"[A/B] value head override -> {args.value}")
+        print(f"[stack] value head -> {args.value}")
 
     sweep_cfgs = [hybrid_config(wv) for wv in sorted(args.wv)]
-    wm_cfg = wm_only_config() if args.wm_only else None
+    wm_cfg = wm_only_config(args.wm_wv) if args.wm_only else None
     all_cfgs = sweep_cfgs + ([wm_cfg] if wm_cfg else [])
 
     total = len(args.envs) * len(all_cfgs) * args.n

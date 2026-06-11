@@ -1,0 +1,12 @@
+RANKED BY SPL
+Env    Config                 SR     SPL   AvgSucc    N
+-------------------------------------------------------
+env2   map-only            100%   0.368      46.7   20
+env1   p2b WV50            100%   0.278      53.9   20
+env1   old WV50            100%   0.273      58.1   20
+env1   map-only            100%   0.272      56.8   20
+env2   old WV50            100%   0.199      70.3   20
+env2   p2b WV50            100%   0.192      62.4   20
+env3   map-only             95%   0.183      84.5   20
+env3   p2b WV50            100%   0.178      87.3   20
+env3   old WV50             90%   0.145      86.3   20
